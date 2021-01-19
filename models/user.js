@@ -37,7 +37,7 @@ function validateUser(user) {
     role: Joi.string().required()
   };
 
-  return Joi.validate(customer, schema);
+  return Joi.validate(user, schema);
 }
 
 exports.User = User;
