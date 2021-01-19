@@ -27,8 +27,7 @@ const User = mongoose.model('User', new mongoose.Schema({
     required: true,
     status: ["admin", "student", "content_creator"]
   },
-  timestamps: true,
-}));
+}, {timestamps: true}));
 
 function validateUser(user) {
   const schema = {
