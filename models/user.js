@@ -27,6 +27,17 @@ const User = mongoose.model('User', new mongoose.Schema({
     required: true,
     status: ["admin", "student", "content_creator"]
   },
+  /*
+  adding the user relationships 
+
+  blogs:[{type:mongoose.ObjectID,ref:"blog"}],
+  bookmarkedBlogs:[{type:mongoose.ObjectID,ref:"blog"}],
+
+  solvedProblems:[{type:mongoose.ObjectID,ref:"Problem"}],
+  bookmarkedProblems:[{type:mongoose.ObjectID,ref:"Problem"}],
+
+  codes:[{type:mongoose.ObjectID,ref:"Code"}],
+  */
 }, {timestamps: true}));
 
 function validateUser(user) {
