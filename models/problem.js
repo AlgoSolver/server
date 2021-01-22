@@ -11,10 +11,10 @@ const problemSchema = new Schema({
     timeLimit: {required: true, type: Number},
     memoryLimit: {required: true, type: Number},
     modelAnswer: {required: true, type: String},
-    tutrial: {required: true, type: String},
-  }
+    editorial: {required: true, type: String},
+  },
   
-}, {timestamps: true}));
+}, {timestamps: true});
 
 
 module.exports = mongoose.model('Problem', problemSchema);
