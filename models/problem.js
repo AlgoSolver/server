@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Joi = require('joi');
 const Schema = mongoose.Schema;
 
-const testCaseSchema = new mongoose.Schema(
+const testCaseSchema = new Schema(
   {
     input: String,
     output: String,
