@@ -34,7 +34,7 @@ const submissionSchema = new Schema(
       type: Number,
     },
     sourceCode: {
-      type: String,
+      type: Buffer, // to store sourcce as data in the form of arrays.
       required: true,
     },
     time: {
@@ -50,7 +50,7 @@ const submissionSchema = new Schema(
       default: 0,
     },
 
-}, {timestamps: true}));
+}, {timestamps: true});
 
 function validateSubmission(Submission) {
   const schema = {
@@ -59,7 +59,7 @@ function validateSubmission(Submission) {
         problem: Joi.string().required().min(1),
         contest: Joi.string().min(1),
         languageID: Joi.number().required().min(1),
-        sourceCode: Joi.string().required().min(1)
+        sourceCode: Joi.array().required().min(1) // i don't know if type Buffer works with Joi or not, please review it
   };
 
   return Joi.validate(Submission, schema);
