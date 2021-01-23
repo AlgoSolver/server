@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Joi = require('joi');
 
 
 const submissionSchema = new Schema( 
@@ -51,4 +52,18 @@ const submissionSchema = new Schema(
 
 }, {timestamps: true}));
 
+function validateSubmission(Submission) {
+  const schema = {
+        title: Joi.string().required(),
+        user: Joi.any(),
+        problem: Joi.string().required().min(1),
+        contest: Joi.string().min(1),
+        languageID: Joi.number().required().min(1),
+        sourceCode: Joi.string().required().min(1)
+  };
+
+  return Joi.validate(Submission, schema);
+}
+
 module.exports = mongoose.model('Submission', submissionSchema);
+module.exports = mongoose.model('validateSubmission', validateSubmission);
