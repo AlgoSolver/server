@@ -51,4 +51,4 @@ const submissionSchema = new Schema(
 
 }, {timestamps: true}));
 
-module.exports = mongoose.model('submissionSchema', trackSchema);
+module.exports = mongoose.model('Submission', submissionSchema);
