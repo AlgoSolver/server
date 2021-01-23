@@ -39,7 +39,7 @@ function validateProblem(Problem) {
       editorial: Joi.string().required(),
   };
 
-  return Joi.validate(user, schema);
+  return Joi.validate(Problem, schema);
 }
 
 module.exports = mongoose.model('Problem', problemSchema);
