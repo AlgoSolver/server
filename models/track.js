@@ -5,35 +5,30 @@ const Schema = mongoose.Schema;
 const trackSchema = new Schema(
   {
     title: {
-      type: String,
-      required: true
+      type: String
     },
     content: {
-      type: String,
-      required: true
+      type: String
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
-    childrenTracks:{
-      type: String,
-      required: true
+      ref: 'User'
     },
     parentTrack: {
-      type: String,
-      required: true
-    }
+      type:mongoose.ObjectId,
+      ref:'Track'
+    },
     prerequistes: {
-      type: String,
-      required: true
+      type: String
+    },
+    problems:{
+      type:[mongoose.ObjectId],
+      ref:'Problem'
     }
   },
   { timestamps: true }
   
 );
 
- 
 
 module.exports = mongoose.model('Track', trackSchema);

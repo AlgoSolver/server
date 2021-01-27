@@ -14,7 +14,7 @@ const Code = mongoose.model('Code', new mongoose.Schema({
     required: true
   },
   source_code: {
-    data: Buffer, // to store our sourcce as data in the form of arrays.
+    data: String, // to store our sourcce as data in the form of arrays.
   },
   language: {
     type: String,

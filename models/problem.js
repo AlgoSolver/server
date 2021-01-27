@@ -14,14 +14,19 @@ const problemSchema = new Schema({
   description: {
     title: {required: true, type: String},
     statement: {required: true, type: String},
-    sampleInput: {required: true, type: String},
-    sampleOutput: {required: true, type: String},
-    samples: {required: true, type: [testCaseSchema]},
+    testCases: {required: true, type: [testCaseSchema]},
     timeLimit: {required: true, type: Number},
     memoryLimit: {required: true, type: Number},
     modelAnswer: {required: true, type: String},
     editorial: {required: true, type: String},
-  },
+    prerequest:{
+      type:[mongoose.ObjectId],
+      ref:'Track'
+    }
+    // classicProblems:{
+    //   type:Boolean,
+    //   default:false
+    // }
   
 }, {timestamps: true}
 );

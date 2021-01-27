@@ -6,15 +6,11 @@ const User = mongoose.model('User', new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 5,
-    maxlength: 10,
     trim: true
   },
   password: {
     type: String,
-    required: true,
-    minlength: 8,
-    maxlength: 20,
+    required: true
   },
   email: {
     type: String,
@@ -24,8 +20,8 @@ const User = mongoose.model('User', new mongoose.Schema({
   },
   role: {
     type: String,
-    required: true,
-    status: ["admin", "student", "content_creator"]
+    status: ["admin", "student", "content_creator"],
+    default:"student"
   },
   /*
   adding the user relationships 
@@ -40,16 +36,4 @@ const User = mongoose.model('User', new mongoose.Schema({
   */
 }, {timestamps: true}));
 
-function validateUser(user) {
-  const schema = {
-    username: Joi.string().min(5).max(10).required(),
-    password: Joi.string().min(8).max(20).required().regex(/^[\w]{8,20}$/),
-    email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }),
-    role: Joi.string().required()
-  };
-
-  return Joi.validate(user, schema);
-}
-
-exports.User = User;
-exports.validate = validateUser;
+module.exports = User;
