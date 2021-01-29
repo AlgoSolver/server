@@ -1,21 +1,22 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const User = require("./user.js");
 const Code = require("./code");
-const { func } = require("joi");
 
 
 mongoose.connect("mongodb://localhost/playground")// only here for testing will be removed and implemented at index.js
     .then(() => console.log("Connected Successfully..."))
     .catch((err) => console.error(err));
 
+const joiTestSetSchema = Joi.object({
+    constraints: Joi.string().required(),
+    expectedComplexity: Joi.string(),
+    testCases : Joi.array().items(Joi.string()).min(1).required()
+});
 
 function validateTestSet(testSet){
-    const schema = Joi.object({
-        constraints: Joi.string().required(),
-        expectedComplexity: Joi.string(),
-        testCases : Joi.array().items(Joi.string()).min(1).required()
-    });
+    const schema = joiTestSetSchema;
     const {error} = schema.validate(testSet)
     return error;
 }
@@ -44,6 +45,55 @@ const testSetSchema = new mongoose.Schema({
 });
 
 const ObjectId = mongoose.Schema.Types.ObjectId;
+
+function validateProblem(problem) {
+    let schema;
+    if(typeof problem === "object" && problem.isPublished === true){
+        schema = Joi.object({
+            title: Joi.string().required(),
+            description: Joi.string().required(), 
+            author : Joi.objectId().required(),
+            timeLimit: Joi.number().min(.5).max(10),
+            memoryLimit: Joi.number().min(1024 * 16).max(1024*1024),
+            editorial: Joi.string(),
+            testSets : Joi.array().items(joiTestSetSchema).min(1).required(),
+            isPublished: Joi.boolean().required(),
+            modelAnswer : Joi.objectId().required(),
+            checker : Joi.objectId().required(),
+            validator : Joi.objectId().required()
+        });
+    }
+    else{
+        schema = Joi.object({
+            title: Joi.string().required(),
+            description: Joi.string().required(), 
+            author : Joi.objectId().required(),
+            timeLimit: Joi.number().min(.5).max(10),
+            memoryLimit: Joi.number().min(1024 * 16).max(1024*1024),
+            editorial: Joi.string(),
+            testSets : Joi.array().items(joiTestSetSchema).min(1),
+            isPublished: Joi.boolean(),
+            modelAnswer : Joi.objectId(),
+            checker : Joi.objectId(),
+            validator : Joi.objectId()
+        });
+    }
+    const {error} = schema.validate(problem);
+    return error;
+}
+
+// const result = validateProblem({ // test alidation
+//     author: "60134b88faf27c146876ba57",
+//     title: "Sorting", 
+//     description: "Sort the given array of numbers",
+//     isPublished: false,
+//     testSets : [{expectedComplexity: "O(N)", constraints: "1 <= N <= 1e6", testCases: ["123", "234"]}],
+//     modelAnswer: "6013ffd59149bc216d5818ae",
+//     validator: "6013ffd59149bc216d5818ae", 
+//     checker: "6013ffd59149bc216d5818ae"
+// });
+
+// console.log("result :", result);
 
 const problemSchema = new mongoose.Schema({
     title: {
@@ -199,3 +249,4 @@ module.exports.Problem = Problem;
 module.exports.createProblem = createProblem;
 module.exports.getProblems = getProblems;
 module.exports.updateProblem = updateProblem;
+module.exports.validateProblem = validateProblem;
