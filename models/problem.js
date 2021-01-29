@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 const User = require("./user.js");
 const Code = require("./code");
+const { func } = require("joi");
 
 
 mongoose.connect("mongodb://localhost/playground")// only here for testing will be removed and implemented at index.js
@@ -92,7 +93,6 @@ const problemSchema = new mongoose.Schema({
         default: false,
         validate:{
             validator: function(value){
-                console.log("Calling validator of is published \n This is :", this, "\n\n\n");
                 if(!value)
                     return true;
                 if(!this.modelAnswer || !this.checker || !this.validator || !this.testSets || !Array.isArray(this.testSets) || this.testSets.length == 0)
@@ -154,6 +154,31 @@ async function createProblem(problem){
 //     checker: "6013ffd59149bc216d5818ae"
 // });
 
+async function updateProblem(id, updated) {// this object should contain the items to update
+   try{ 
+        const problem = await Problem.findById(id);
+        if(!problem){
+            return false;
+        }
+        for(let item in updated){
+            problem[item] = updated[item];
+        }
+        const res = await problem.save();
+        return res;
+    }
+    catch(err){
+        throw err;
+    }
+}
+
+
+// updateProblem("60140a7d1af8fd245ec599ea", {
+//     title: "New Problem Title :)"
+// })
+//     .then((problem) => console.log("Updated problem :", problem))
+//     .catch(err => console.error(err));
+
+
 async function getProblems() {
     try{
         const res = await Problem.find().populate("modelAnswer").populate("checker").populate("validator");
@@ -164,10 +189,13 @@ async function getProblems() {
     }
 }
 
-//getProblems();
+// getProblems()
+//     .then((problems) => console.log(problems))
+//     .catch((err) => console.error(err));
 
 
 module.exports.validateTestSet = validateTestSet;
 module.exports.Problem = Problem;
 module.exports.createProblem = createProblem;
 module.exports.getProblems = getProblems;
+module.exports.updateProblem = updateProblem;
