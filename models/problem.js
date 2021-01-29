@@ -154,7 +154,20 @@ async function createProblem(problem){
 //     checker: "6013ffd59149bc216d5818ae"
 // });
 
+async function getProblems() {
+    try{
+        const res = await Problem.find().populate("modelAnswer").populate("checker").populate("validator");
+        return res;
+    }
+    catch(err){
+        throw err;
+    }
+}
+
+//getProblems();
+
 
 module.exports.validateTestSet = validateTestSet;
 module.exports.Problem = Problem;
 module.exports.createProblem = createProblem;
+module.exports.getProblems = getProblems;
