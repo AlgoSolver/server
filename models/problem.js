@@ -130,5 +130,31 @@ const problemSchema = new mongoose.Schema({
 const Problem = new mongoose.model("Problem", problemSchema);
 
 
+
+
+async function createProblem(problem){
+    try{
+        problem = new Problem(problem);
+        const res = await problem.save();
+        return res;        
+    }
+    catch(err){
+        throw err;
+    }
+}
+
+// createProblem({// example of creating problemm
+//     author: "60134b88faf27c146876ba57",
+//     title: "Sorting", 
+//     description: "Sort the given array of numbers",
+//     isPublished: false,
+//     testSets : [{expectedComplexity: "O(N)", constraints: "1 <= N <= 1e6", testCases: ["123", "234"]}],
+//     modelAnswer: "6013ffd59149bc216d5818ae",
+//     validator: "6013ffd59149bc216d5818ae", 
+//     checker: "6013ffd59149bc216d5818ae"
+// });
+
+
 module.exports.validateTestSet = validateTestSet;
 module.exports.Problem = Problem;
+module.exports.createProblem = createProblem;
