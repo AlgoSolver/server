@@ -4,11 +4,6 @@ Joi.objectId = require("joi-objectid")(Joi);
 const User = require("./user.js");
 const Code = require("./code");
 
-
-mongoose.connect("mongodb://localhost/playground")// only here for testing will be removed and implemented at index.js
-    .then(() => console.log("Connected Successfully..."))
-    .catch((err) => console.error(err));
-
 const joiTestSetSchema = Joi.object({
     constraints: Joi.string().required(),
     expectedComplexity: Joi.string(),

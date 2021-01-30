@@ -44,16 +44,21 @@ app.use(
     exposedHeaders: ["Set-Cookie", "Date", "ETag"],
   })
 );
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(authMiddleware);
+
 const userRoutes = require("./routes/userRoutes");
+const problemSettingRouter = require(".//routes/problemSetting");
+
 app.use("/home", (req, res) => {
   console.log("home");
   return res.status(200).json({ message: "hello there" });
 });
 app.use("/api/user", userRoutes);
+app.use("/api/problemSetting", problemSettingRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
