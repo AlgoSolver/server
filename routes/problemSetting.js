@@ -17,5 +17,19 @@ router.get("/getProblems", async(req, res) => {
     }
 });
 
+router.post("/postProblem", async(req, res) => {
+    try{
+        const error = validateProblem(req.body);// author in body should be the same as current user.
+        if(error){
+            return res.status(400).send(error.details);
+        }
+        const problem = await createProblem(req.body);
+        res.status(200).send(problem);
+    }
+    catch(err) {
+
+    }
+})
+
 
 module.exports = router;
