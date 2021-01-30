@@ -77,8 +77,26 @@ function validateProblem(problem) {
     return error;
 }
 
+function validateProblemItems(problem) {// same as previous except nothing is required to make it easier to update problems
+    schema = Joi.object({
+        title: Joi.string(),
+        description: Joi.string(), 
+        author : Joi.objectId(),
+        timeLimit: Joi.number().min(.5).max(10),
+        memoryLimit: Joi.number().min(1024 * 16).max(1024*1024),
+        editorial: Joi.string(),
+        testSets : Joi.array().items(joiTestSetSchema).min(1),
+        isPublished: Joi.boolean(),
+        modelAnswer : Joi.objectId(),
+        checker : Joi.objectId(),
+        validator : Joi.objectId()
+    });
+    const {error} = schema.validate(problem);
+    return error;
+}
+
 // const result = validateProblem({ // test alidation
-//     author: "60134b88faf27c146876ba57",
+//     author: "    ",
 //     title: "Sorting", 
 //     description: "Sort the given array of numbers",
 //     isPublished: false,
@@ -245,3 +263,4 @@ module.exports.createProblem = createProblem;
 module.exports.getProblems = getProblems;
 module.exports.updateProblem = updateProblem;
 module.exports.validateProblem = validateProblem;
+module.exports.validateProblemItems = validateProblemItems;
