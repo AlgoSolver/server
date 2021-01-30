@@ -24,7 +24,7 @@ exports.login = async (req, res, next) => {
 };
 exports.logout = async (req, res) => {
   res.clearCookie("user");
-  return res.status(200).json({ message: "signed out successed" });
+  return res.status(200).json({ notAuth:true });
 };
 exports.getCurrent = async (req, res) => {
   return res.status(200).json(req.auth);
@@ -43,7 +43,8 @@ exports.googleLogin = async (req, res) => {
       .status(500)
       .json({ message: "Something went wrong. Try later." });
   }
-  const { email_verified, name, email, username } = response.payload;
+  const { email_verified, name, email } = response.payload;
+  //return res.status(200).json({message:"heloo"});
   if (!email_verified) {
     return res
       .status(422)
@@ -58,22 +59,23 @@ exports.googleLogin = async (req, res) => {
   }
 
   if (!existingUser) {
-    let password = email + process.env.JWT_KEY;
-    existingUser = new User({ username, email, password });
-    try {
-      await existingUser.save();
-    } catch (err) {
-      return res
-        .status(500)
-        .json({ message: "Google login failed. Try again" });
-    }
-  }
+       return res.status(400).json({ message: "Account does't exist" });
+//     let password = email + process.env.JWT_KEY;
+//     existingUser = new User({ username, email, password });
+//     try {
+//       await existingUser.save();
+//     } catch (err) {
+//       return res
+//         .status(500)
+//         .json({ message: "Google login failed. Try again" });
+//     }
+   }
 
   const token = jwt.sign(
     {
       email: email,
       userId: existingUser._id,
-      username: username,
+      username: existingUser.username,
     },
     process.env.JWT_KEY,
     {
@@ -84,7 +86,7 @@ exports.googleLogin = async (req, res) => {
     httpOnly: true,
     max: 1000 * 60 * 60 * 24 * 12, // 1 year
   });
-  return res.status(200).json({ email, userId: existingUser._id, username });
+  return res.status(200).json({ email, _id: existingUser._id, username:existingUser.username });
 };
 exports.signup = async (req, res, next) => {
   const { email, password, username } = req.body;
@@ -112,7 +114,7 @@ exports.signup = async (req, res, next) => {
       { expiresIn: "30m" }
     );
     const e = send(
-      email,
+       email,
       "Activate Email",
       activateAccountTemp(process.env.CLIENT_URL, token)
     );
@@ -177,7 +179,6 @@ exports.activateAccount = async (req, res, next) => {
 exports.tokenVerification = async (req, res) => {
   const { token } = req.body;
   //if the token exist
-  //console.log(token)
   let decodedToken;
   try {
     decodedToken = jwt.verify(token, process.env.JWT_RESET_PASSWORD);
@@ -228,6 +229,7 @@ exports.emailVerification = async (req, res, next) => {
     await existingUser.save();
     const e = send(email, "Reset Password", text);
   } catch (err) {
+
     return res
       .status(500)
       .json({ message: "Something went wrong. Try later." });
@@ -238,7 +240,7 @@ exports.emailVerification = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
   const { password, token } = req.body;
 
-  // decode the restetpasswordlink
+  // decode the resetPasswordLink
   let userInfo;
   try {
     userInfo = jwt.verify(token, process.env.JWT_RESET_PASSWORD);
@@ -265,7 +267,7 @@ exports.resetPassword = async (req, res, next) => {
   if (!user) {
     return res.status(500).json({ message: "Something went wrong. Try later" });
   }
-  if (user.restetpasswordlink !== token)
+  if (user.resetPasswordLink !== token)
     return res.status(500).json({ message: "This token has been expired" });
   // incode password
   let incryptedPassword;
@@ -283,5 +285,5 @@ exports.resetPassword = async (req, res, next) => {
   } catch (err) {
     return res.status(500).json({ message: "Something went wrong. Try later" });
   }
-  return res.status(200).json({ email: userInfo.emailVerification });
+  return res.status(200).json({ email: (userInfo.email || user.email) });
 };

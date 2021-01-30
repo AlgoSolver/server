@@ -23,7 +23,7 @@ router.post(
 router.post("/logout", userController.logout);
 router.post("/google-login", userController.googleLogin);
 
-router.post("/signup", limiter, userValidator.signup, userController.signup);
+router.post("/signup", userValidator.signup, userController.signup);
 
 router.post(
   "/activate-account",
