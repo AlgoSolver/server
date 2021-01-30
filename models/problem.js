@@ -219,11 +219,13 @@ async function createProblem(problem){
 
 async function updateProblem(id, updated) {// this object should contain the items to update
    try{ 
+       console.log(`Updating probelm with ${updated}`)
         const problem = await Problem.findById(id);
         if(!problem){
             return false;
         }
         for(let item in updated){
+            console.log(`setting ${item} to updated[item]`);
             problem[item] = updated[item];
         }
         const res = await problem.save();
@@ -244,7 +246,7 @@ async function updateProblem(id, updated) {// this object should contain the ite
 
 async function getProblems() {
     try{
-        const res = await Problem.find().populate("modelAnswer").populate("checker").populate("validator");
+        const res = await Problem.find().populate("author", "username email").populate("modelAnswer").populate("checker").populate("validator");
         return res;
     }
     catch(err){
