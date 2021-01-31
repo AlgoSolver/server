@@ -73,27 +73,25 @@ async function createSubmission(submission){
   try{
     submission = new Submission(submission);
     const result = await submission.save();
-    console.log("Result => ", result);
+    return result;
   }
   catch(err){
-    console.log("error => \n", err);
-    //throw err;
+    throw err;
   }
 }
 
 async function updateSubmission(id, updated){
-  try{const submission = await Submission.findById(id);
-  if(!submission){
-    console.log("Didn't find a submission with id ", id);
-    return false;
+  try{
+    const submission = await Submission.findById(id);
+    if(!submission){
+      return false;
+    }
+    for(item in updated){
+      submission[item] = updated[item];
+    }
+    const res = await submission.save();
+    return res;
   }
-  for(item in updated){
-    console.log(`setting ${item} to updated[item]`);
-    submission[item] = updated[item];
-  }
-  const res = await submission.save();
-  console.log("Res => ", res);
-  return res;}
   catch(err){
     console.error(err);
     throw  err;
@@ -108,4 +106,3 @@ async function updateSubmission(id, updated){
 module.exports.validateSubmission = validateSubmission;
 module.exports.Submission = Submission;
 module.exports.createSubmission = createSubmission;
-module.exports.updateSubmission = updateSubmission;
