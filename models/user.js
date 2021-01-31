@@ -22,26 +22,28 @@ const User = mongoose.model('User', new mongoose.Schema({
     type: String,
     status: ["admin", "student", "content_creator"],
     default:"student"
-  },
+  }
   //adding the user relationships 
-  blogs:[{
-    type:mongoose.ObjectID,ref:"blog"
-  }],
+//   blogs:[{
+//     type:mongoose.ObjectID,ref:"blog"
+//   }],
 
-  bookmarkedBlogs:[{
-    type:mongoose.ObjectID,ref:"blog"
-  }],
+//   bookmarkedBlogs:[{
+//     type:mongoose.ObjectID,ref:"blog"
+//   }],
 
-  solvedProblems:[{
-    type:mongoose.ObjectID,ref:"problem"
-  }],
-  bookmarkedProblems:[{
-    type:mongoose.ObjectID,ref:"problem"
-  }],
+//   solvedProblems:[{
+//     type:mongoose.ObjectID,ref:"problem"
+//   }],
+//   bookmarkedProblems:[{
+//     type:mongoose.ObjectID,ref:"problem"
+//   }],
 
-  codes:[{
-      type:mongoose.ObjectID,ref:"code"
-    }],
-}, {timestamps: true}));
+//   codes:[{
+//       type:mongoose.ObjectID,ref:"code"
+//     }],
+// }, {timestamps: true}
+})
+);
 
 module.exports = User;
