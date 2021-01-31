@@ -20,10 +20,12 @@ router.post("/", async(req, res) => {
 router.get("/:id", async(req, res) => {
     try{
         const submission = await getSubmission(req.params.id);
-        res.send(submission);
+        if(!submission)
+            return res.status(404).send({message : "Submission not found"});
+        return res.send(submission);
     }
     catch(err){
-        res.send(404).send("Submission not found");
+        return res.status(404).send({message : "Submission not found"});
     }
 });
 
