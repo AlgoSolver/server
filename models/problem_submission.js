@@ -1,51 +1,44 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Joi = require('joi');
+const { func } = require('joi');
+Joi.objectId = require("joi-objectid")(Joi);
 
 
-const submissionSchema = new Schema( 
-{
+const submissionStatusOptions = ["Pending", "Accepted", "Wrong Answer", "Time Limit Exceeded", "Memory Limit Exceeded", "Compilation Error"];
+
+const submissionSchema = new mongoose.Schema( {
     // According to schema description in: https://github.com/AlgoSolver/database-schema
-    contest: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Contest',
-      required: true,
-    },
     problem: {
       type: mongoose.Types.ObjectId,
       ref: 'Problem',
       required: true,
     },
-    user: {
+    author: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    isDuringContest: {
-      type: Boolean,
-      default: false,
-    },
-    isJudged: {
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    SubmissionID: {
-      type: Number,
-    },
-    sourceCode: {
-      type: Buffer, // to store sourcce as data in the form of arrays.
+    code: {
+      type: mongoose.Types.ObjectId, // to store sourcce as data in the form of arrays.
+      ref: "Code",
       required: true,
     },
-    time: {
+    status: {
+      type : String,
+      required : true,
+      default : "Pending",
+      enum : submissionStatusOptions
+    },
+    expectedComplexity : {// the complexity of last passed testSet
+      type : String,
+      default : "No Expected Complexity"
+    },
+    usedTime: {
       type: Number,
       default: 0,
     },
-    languageID: { // till now c++
-      type: Number,
-      required: true,
-    },
-    memory: {
+    usedMemory: {
       type: Number,
       default: 0,
     },
@@ -53,17 +46,29 @@ const submissionSchema = new Schema(
 }, {timestamps: true});
 
 function validateSubmission(Submission) {
-  const schema = {
-        title: Joi.string().required(),
-        user: Joi.any(),
-        problem: Joi.string().required().min(1),
-        contest: Joi.string().min(1),
-        languageID: Joi.number().required().min(1),
-        sourceCode: Joi.array().required().min(1) // i don't know if type Buffer works with Joi or not, please review it
-  };
+  const schema = new Joi.object({
+        problem: Joi.objectId().required(),
+        author: Joi.objectId().required(),
+        code: Joi.objectId().required(),
+        expectedComplexity : Joi.string(),
+        usedTime : Joi.number(),
+        usedMemory : Joi.number(),
+        status : Joi.string().equal(...submissionStatusOptions).required()
+  });
 
-  return Joi.validate(Submission, schema);
+  return schema.validate(Submission);
 }
 
-module.exports = mongoose.model('Submission', submissionSchema);
-module.exports = mongoose.model('validateSubmission', validateSubmission);
+// const {error} = validateSubmission({
+//   problem : "123456789012123456789012",
+//   author : "123456789012123456789012",
+//   code : "123456789012123456789012",
+//   status : "Compilation Error"
+// });
+// console.log("error => \n", error);
+
+
+const Submission = mongoose.model('Submission', submissionSchema);
+
+module.exports.validateSubmission = validateSubmission;
+module.exports.Submission = Submission;
