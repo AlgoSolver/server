@@ -93,7 +93,6 @@ async function updateSubmission(id, updated){
     return res;
   }
   catch(err){
-    console.error(err);
     throw  err;
   }
 }

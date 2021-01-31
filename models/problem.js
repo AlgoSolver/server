@@ -219,13 +219,11 @@ async function createProblem(problem){
 
 async function updateProblem(id, updated) {// this object should contain the items to update
    try{ 
-       console.log(`Updating probelm with ${updated}`)
         const problem = await Problem.findById(id);
         if(!problem){
             return false;
         }
         for(let item in updated){
-            console.log(`setting ${item} to updated[item]`);
             problem[item] = updated[item];
         }
         const res = await problem.save();

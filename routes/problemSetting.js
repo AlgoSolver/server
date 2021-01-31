@@ -39,7 +39,6 @@ router.put("/updateProblem/:id", async (req, res) => {
             return res.status(400).send(error.details);
         }
         const problem = await updateProblem(req.params.id, req.body);
-        console.log("Problem :", problem);
         if(!problem){
             return res.status(404).send({message : "The given Problem Id is invalid"});
         }
