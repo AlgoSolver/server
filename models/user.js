@@ -19,6 +19,10 @@ const User = mongoose.model('User', new mongoose.Schema({
     unique: true,
   },
   role: {
+    type: String,
+    status: ["admin", "student", "content_creator"],
+    default:"student"
+  }
      type: String,
      enum : ["admin","student", "user", "content_creator"],
      default: 'user'
@@ -29,6 +33,9 @@ const User = mongoose.model('User', new mongoose.Schema({
   },
   //adding the user relationships 
 //   blogs:[{
+//     type:mongoose.ObjectID,ref:"blog"
+//   }],
+//   bookmarkedBlogs:[{
 //     type:mongoose.ObjectID,ref:"blog"
 //   }],
 // 
@@ -42,10 +49,15 @@ const User = mongoose.model('User', new mongoose.Schema({
 //   bookmarkedProblems:[{
 //     type:mongoose.ObjectID,ref:"problem"
 //   }],
+//   codes:[{
+//       type:mongoose.ObjectID,ref:"code"
+//     }],
+// }, {timestamps: true}
+// })
+// );
 // 
 //   codes:[{
 //       type:mongoose.ObjectID,ref:"code"
 //     }],
 }, {timestamps: true}));
-
 module.exports = User;
