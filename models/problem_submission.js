@@ -103,6 +103,17 @@ async function updateSubmission(id, updated){
 //   expectedComplexity : "O(N^2)"
 // });
 
+async function getSubmission(id) {
+  try{
+    const submission = await Submission.findById(id);
+    return  submission;
+  }
+  catch(err) {
+    throw err;
+  }
+}
+
 module.exports.validateSubmission = validateSubmission;
 module.exports.Submission = Submission;
 module.exports.createSubmission = createSubmission;
+module.exports.getSubmission = getSubmission;
