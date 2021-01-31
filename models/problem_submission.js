@@ -55,7 +55,8 @@ function validateSubmission(submission) {
         usedMemory : Joi.number(),
         status : Joi.string().equal(...submissionStatusOptions).required()
   });
-  return schema.validate(submission);
+  const {error} = schema.validate(submission);
+  return error;
 }
 
 // const {error} = validateSubmission({

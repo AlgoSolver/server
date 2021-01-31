@@ -7,7 +7,7 @@ router.post("/", async(req, res) => {
         req.body.status = "Pending";// will raise an event after inserting to database any pending
         const error = validateSubmission(req.body);
         if(error){
-            return res.status(400).send(error);
+            return res.status(400).send(error.details);
         }
         const submission = await createSubmission(req.body);
         res.send(submission);
