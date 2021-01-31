@@ -45,7 +45,7 @@ const submissionSchema = new mongoose.Schema( {
 
 }, {timestamps: true});
 
-function validateSubmission(Submission) {
+function validateSubmission(submission) {
   const schema = new Joi.object({
         problem: Joi.objectId().required(),
         author: Joi.objectId().required(),
@@ -55,8 +55,7 @@ function validateSubmission(Submission) {
         usedMemory : Joi.number(),
         status : Joi.string().equal(...submissionStatusOptions).required()
   });
-
-  return schema.validate(Submission);
+  return schema.validate(submission);
 }
 
 // const {error} = validateSubmission({
@@ -70,5 +69,43 @@ function validateSubmission(Submission) {
 
 const Submission = mongoose.model('Submission', submissionSchema);
 
+async function createSubmission(submission){
+  try{
+    submission = new Submission(submission);
+    const result = await submission.save();
+    console.log("Result => ", result);
+  }
+  catch(err){
+    console.log("error => \n", err);
+    //throw err;
+  }
+}
+
+async function updateSubmission(id, updated){
+  try{const submission = await Submission.findById(id);
+  if(!submission){
+    console.log("Didn't find a submission with id ", id);
+    return false;
+  }
+  for(item in updated){
+    console.log(`setting ${item} to updated[item]`);
+    submission[item] = updated[item];
+  }
+  const res = await submission.save();
+  console.log("Res => ", res);
+  return res;}
+  catch(err){
+    console.error(err);
+    throw  err;
+  }
+}
+
+// updateSubmission("60169108ba7de4fd99080ec2", {
+//   status: "Accepted", 
+//   expectedComplexity : "O(N^2)"
+// });
+
 module.exports.validateSubmission = validateSubmission;
 module.exports.Submission = Submission;
+module.exports.createSubmission = createSubmission;
+module.exports.updateSubmission = updateSubmission;
