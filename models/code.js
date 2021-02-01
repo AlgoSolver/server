@@ -28,13 +28,13 @@ function validateCode(code) {
   return schema.validate(code);
 }
 
-const {error} = validateCode({
-  author : "123456789012123456789012",
-  sourceCode : "Cout << \" Hello World \" << endl;\n",
-  language : "C++"
+// const {error} = validateCode({
+//   author : "123456789012123456789012",
+//   sourceCode : "Cout << \" Hello World \" << endl;\n",
+//   language : "C++"
 
-});
-console.log("validation error => ", error);
+// });
+// console.log("validation error => ", error);
 
 // createCode({
 //   author : "60158b8029b9b6160c5f078b",
