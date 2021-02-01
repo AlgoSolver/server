@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Joi = require('joi');
-const { func } = require('joi');
 Joi.objectId = require("joi-objectid")(Joi);
-
 
 const submissionStatusOptions = ["Pending", "Accepted", "Wrong Answer", "Time Limit Exceeded", "Memory Limit Exceeded", "Compilation Error"];
 
@@ -70,16 +68,33 @@ function validateSubmission(submission) {
 
 const Submission = mongoose.model('Submission', submissionSchema);
 
+
+module.exports.Submission = Submission;
+const SubmissionHandler = require("./submissionEventHandler");
+const { create } = require('./user');
+
+const submissionHandler = new SubmissionHandler();
+
 async function createSubmission(submission){
   try{
     submission = new Submission(submission);
     const result = await submission.save();
+    submissionHandler.testOneSubmission(submission._id)
+      .then((res) => console.log("Tested submission without problems !!!\n", res))
+      .catch(err => (console.log(err.message)));
     return result;
   }
   catch(err){
-    throw err;
+    console.log("err = > ", err);
+    //throw err;
   }
 }
+
+// createSubmission({ 
+//     code : "601647f3318eb9c8bf4fb8c7",
+//     problem : "60173c6d5236522717f7563c",
+//     author : "123456789012123456789012"
+// });
 
 async function updateSubmission(id, updated){
   try{
@@ -114,6 +129,6 @@ async function getSubmission(id) {
 }
 
 module.exports.validateSubmission = validateSubmission;
-module.exports.Submission = Submission;
 module.exports.createSubmission = createSubmission;
 module.exports.getSubmission = getSubmission;
+module.exports.updateSubmission = updateSubmission;
