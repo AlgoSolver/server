@@ -79,9 +79,7 @@ async function createSubmission(submission){
   try{
     submission = new Submission(submission);
     const result = await submission.save();
-    submissionHandler.testOneSubmission(submission._id)
-      .then((res) => console.log("Tested submission without problems !!!\n", res))
-      .catch(err => (console.log(err.message)));
+    submissionHandler.emit("submit", (submission._id));
     return result;
   }
   catch(err){
@@ -90,11 +88,11 @@ async function createSubmission(submission){
   }
 }
 
-// createSubmission({ 
-//     code : "601647f3318eb9c8bf4fb8c7",
-//     problem : "60173c6d5236522717f7563c",
-//     author : "123456789012123456789012"
-// });
+createSubmission({ 
+    code : "601647f3318eb9c8bf4fb8c7",
+    problem : "60173c6d5236522717f7563c",
+    author : "123456789012123456789012"
+});
 
 async function updateSubmission(id, updated){
   try{

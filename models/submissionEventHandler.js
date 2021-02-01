@@ -2,12 +2,26 @@ const {Submission} = require("./problem_submission");
 const { Code } = require("./code");
 const { Problem} = require("./problem");
 const axios = require("axios");
+const EventEmitter = require("events");
+const { extend } = require("joi");
+const { TIMEOUT } = require("dns");
+
 const playgroundURL = "http://localhost:3000/";
 const runCodePath = "api/runCode", runCheckerPath = "api/runChecker";
 
-class SubmissionHandler{
+class SubmissionHandler extends EventEmitter{
     constructor(){
-
+        super();
+        this.on("submit", (submissionId) => {
+            console.log("Submission Emitted")
+            this.testOneSubmission(submissionId)
+                .then((res) => console.log("Tested submission without problems !!!\n", res))
+                .catch((err) => {
+                    console.log(err.message)
+                    // try to check again after X seconds if server is back
+                    setTimeout(() => ( this.emit("submit", submissionId) ), 60000);// try to connect again every 60 seconds
+                })
+        });
     }
 
     async runTestCase(sourceCode, test){
@@ -53,6 +67,7 @@ class SubmissionHandler{
     }
     
     async testOneSubmission(submissionId){
+        console.log("Called here for testing ...\n");
         const submission = await Submission.findById(submissionId)
         .populate("code", "sourceCode");
 
