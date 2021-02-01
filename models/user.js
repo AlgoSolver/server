@@ -22,10 +22,6 @@ const User = mongoose.model('User', new mongoose.Schema({
     type: String,
     status: ["admin", "student", "content_creator"],
     default:"student"
-  }
-     type: String,
-     enum : ["admin","student", "user", "content_creator"],
-     default: 'user'
   },
   resetPasswordLink:{
      type:String,
