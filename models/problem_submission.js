@@ -88,11 +88,11 @@ async function createSubmission(submission){
   }
 }
 
-createSubmission({ 
-    code : "601647f3318eb9c8bf4fb8c7",
-    problem : "60173c6d5236522717f7563c",
-    author : "123456789012123456789012"
-});
+// createSubmission({ 
+//     code : "601647f3318eb9c8bf4fb8c7",
+//     problem : "60173c6d5236522717f7563c",
+//     author : "123456789012123456789012"
+// });
 
 async function updateSubmission(id, updated){
   try{
