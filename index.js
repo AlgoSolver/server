@@ -26,6 +26,7 @@ const limiter = rateLimit({
 
 if (process.env.NODE_ENV === "production") {
   //  apply to all requests
+  const fs = require("fs");
   app.use(limiter);
   app.use(
     morgan("common", {
