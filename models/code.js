@@ -19,22 +19,22 @@ const Code = new mongoose.model('Code', new mongoose.Schema({
 }, {timestamps: true}));
 
 function validateCode(code) {
+  console.log("called validate code");
   const schema = Joi.object({
     author: Joi.objectId().required(),
     sourceCode : Joi.string().required(),
     language : Joi.string().required().equal("C++")
   });
+  console.log("Will apply validate schema");
 
   return schema.validate(code);
 }
 
-// const {error} = validateCode({
-//   author : "123456789012123456789012",
-//   sourceCode : "Cout << \" Hello World \" << endl;\n",
-//   language : "C++"
-
-// });
-// console.log("validation error => ", error);
+async function createCode(code){
+  code = Code(code);
+  const result = await code.save();
+  return result;
+};
 
 // createCode({
 //   author : "60158b8029b9b6160c5f078b",
@@ -51,3 +51,4 @@ function validateCode(code) {
 
 exports.Code = Code;
 exports.validate = validateCode;
+exports.createCode = createCode;

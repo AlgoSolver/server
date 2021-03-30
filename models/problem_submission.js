@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Joi = require('joi');
 Joi.objectId = require("joi-objectid")(Joi);
-
+const {createCode, validate}= require("../models/code");
 const submissionStatusOptions = ["Pending", "Accepted", "Wrong Answer", "Time Limit Exceeded", "Memory Limit Exceeded", "Compilation Error"];
 
 const submissionSchema = new mongoose.Schema( {
@@ -43,7 +43,19 @@ const submissionSchema = new mongoose.Schema( {
 
 }, {timestamps: true});
 
+async function handleCode(submission){
+  if(mongoose.Types.ObjectId.isValid(submission.code)){
+    return;
+  }
+  const {error} = validate(submission.code);
+    if(error){
+    return error;
+  }
+  submission.code = (await createCode(submission.code))._id;
+}
+
 function validateSubmission(submission) {
+  submission.code = String(submission.code);
   const schema = new Joi.object({
         problem: Joi.objectId().required(),
         author: Joi.objectId().required(),
@@ -71,7 +83,6 @@ const Submission = mongoose.model('Submission', submissionSchema);
 
 module.exports.Submission = Submission;
 const SubmissionHandler = require("./submissionEventHandler");
-const { create } = require('./user');
 
 const submissionHandler = new SubmissionHandler();
 
@@ -83,8 +94,7 @@ async function createSubmission(submission){
     return result;
   }
   catch(err){
-    console.log("err = > ", err);
-    //throw err;
+    throw err;
   }
 }
 
@@ -130,3 +140,4 @@ module.exports.validateSubmission = validateSubmission;
 module.exports.createSubmission = createSubmission;
 module.exports.getSubmission = getSubmission;
 module.exports.updateSubmission = updateSubmission;
+module.exports.handleCode = handleCode;
