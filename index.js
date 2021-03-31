@@ -54,12 +54,15 @@ app.use(authMiddleware);
 const userRoutes = require("./routes/userRoutes");
 const problemSettingRouter = require("./routes/problemSetting");
 const submissionsRouter = require("./routes/submitCode");
+const problems = require('./routes/problems');
+
 app.use("/home", (req, res) => {
   console.log("home");
   return res.status(200).json({ message: "hello there" });
 });
 app.use("/api/user", userRoutes);
-app.use("/api/problemSetting", problemSettingRouter);
+// app.use("/api/problemSetting", problemSettingRouter);
+app.use("/api/problems", problems);
 app.use("/api/submissions", submissionsRouter);
 
 // catch 404 and forward to error handler

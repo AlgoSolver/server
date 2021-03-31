@@ -1,10 +1,13 @@
-const {validateProblem, createProblem, getProblems, updateProblem, validateProblemItems} = require("../models/problem");
+const {validateProblem, createProblem,Problem, getProblems, updateProblem, validateProblemItems} = require("../models/problem");
 const express = require("express");
+
 const router = express.Router();
+
 
 router.get("/", (req, res) => {
     res.send({message : "Welcome Our Tourist :) !!!"});
 })
+
 
 router.get("/getProblems", async(req, res) => {
     try{

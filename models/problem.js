@@ -3,7 +3,7 @@ const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
 const User = require("./user.js");
 const Code = require("./code");
-
+const mongoosePaginate = require("mongoose-paginate-v2");
 const joiTestSetSchema = Joi.object({
     constraints: Joi.string().required(),
     expectedComplexity: Joi.string(),
@@ -24,7 +24,7 @@ const testSetSchema = new mongoose.Schema({
     expectedComplexity : {
         type : String,
         default: "Can't detect Complexity"// for problems where we can't decide the exact complexity such as randomization problems also for sample input
-    }, 
+    },
     testCases: {
         type : [String],
         validate: {
@@ -46,7 +46,7 @@ function validateProblem(problem) {
     if(typeof problem === "object" && problem.isPublished === true){
         schema = Joi.object({
             title: Joi.string().required(),
-            description: Joi.string().required(), 
+            description: Joi.string().required(),
             author : Joi.objectId().required(),
             timeLimit: Joi.number().min(.5).max(10),
             memoryLimit: Joi.number().min(1024 * 16).max(1024*1024),
@@ -61,7 +61,7 @@ function validateProblem(problem) {
     else{
         schema = Joi.object({
             title: Joi.string().required(),
-            description: Joi.string().required(), 
+            description: Joi.string().required(),
             author : Joi.objectId().required(),
             timeLimit: Joi.number().min(.5).max(10),
             memoryLimit: Joi.number().min(1024 * 16).max(1024*1024),
@@ -80,7 +80,7 @@ function validateProblem(problem) {
 function validateProblemItems(problem) {// same as previous except nothing is required to make it easier to update problems
     schema = Joi.object({
         title: Joi.string(),
-        description: Joi.string(), 
+        description: Joi.string(),
         author : Joi.objectId(),
         timeLimit: Joi.number().min(.5).max(10),
         memoryLimit: Joi.number().min(1024 * 16).max(1024*1024),
@@ -97,12 +97,12 @@ function validateProblemItems(problem) {// same as previous except nothing is re
 
 // const result = validateProblem({ // test alidation
 //     author: "    ",
-//     title: "Sorting", 
+//     title: "Sorting",
 //     description: "Sort the given array of numbers",
 //     isPublished: false,
 //     testSets : [{expectedComplexity: "O(N)", constraints: "1 <= N <= 1e6", testCases: ["123", "234"]}],
 //     modelAnswer: "6013ffd59149bc216d5818ae",
-//     validator: "6013ffd59149bc216d5818ae", 
+//     validator: "6013ffd59149bc216d5818ae",
 //     checker: "6013ffd59149bc216d5818ae"
 // });
 
@@ -132,7 +132,7 @@ const problemSchema = new mongoose.Schema({
     memoryLimit: {
         type: Number,
         default: 1024*256, //256 MB
-        min: 1024* 16, 
+        min: 1024* 16,
         max: 1024*1024,// maximum memory is 1GB
         required: true
     },
@@ -167,28 +167,31 @@ const problemSchema = new mongoose.Schema({
         // also when play ground is hosted we should add validation that checker, code are correct.
     },
     modelAnswer: {// should be required before publishing problem
-        type: ObjectId, 
+        type: ObjectId,
         ref: "Code",
         required: function () {// if is published then code should be required
             return this.isPublished;
         }
     },
     checker: {// should be required before publishing problem
-        type: ObjectId, 
+        type: ObjectId,
         ref: "Code",
         required: function () {// if is published then code should be required
             return this.isPublished;
         }
     },
     validator: {// should be required before publishing problem
-        type: ObjectId, 
+        type: ObjectId,
         ref: "Code",
         required: function () {// if is published then code should be required
             return this.isPublished;
         }
     }
-    
+
 });
+
+// handling pagination -- IG
+problemSchema.plugin(mongoosePaginate);
 
 const Problem = new mongoose.model("Problem", problemSchema);
 
@@ -199,7 +202,7 @@ async function createProblem(problem){
     try{
         problem = new Problem(problem);
         const res = await problem.save();
-        return res;        
+        return res;
     }
     catch(err){
         throw err;
@@ -208,17 +211,17 @@ async function createProblem(problem){
 
 // createProblem({// example of creating problemm
 //     author: "60134b88faf27c146876ba57",
-//     title: "Sorting", 
+//     title: "Sorting",
 //     description: "Sort the given array of numbers",
 //     isPublished: false,
 //     testSets : [{expectedComplexity: "O(N)", constraints: "1 <= N <= 1e6", testCases: ["123", "234"]}],
 //     modelAnswer: "6013ffd59149bc216d5818ae",
-//     validator: "6013ffd59149bc216d5818ae", 
+//     validator: "6013ffd59149bc216d5818ae",
 //     checker: "6013ffd59149bc216d5818ae"
 // });
 
 async function updateProblem(id, updated) {// this object should contain the items to update
-   try{ 
+   try{
         const problem = await Problem.findById(id);
         if(!problem){
             return false;
