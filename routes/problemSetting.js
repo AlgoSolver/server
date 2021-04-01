@@ -6,18 +6,7 @@ router.get("/", (req, res) => {
     res.send({message : "Welcome Our Tourist :) !!!"});
 })
 
-router.get("/getProblems", async(req, res) => {
-    try{
-        const problems = await getProblems();
-        res.send(problems);
-    }
-    catch(err){
-        console.error(err);
-        res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
-    }
-});
-
-router.post("/postProblem", async(req, res) => {
+router.post("/", async(req, res) => {
     try{
         const error = validateProblem(req.body);// author in body should be the same as current user.
         if(error){
@@ -32,7 +21,7 @@ router.post("/postProblem", async(req, res) => {
     }
 })
 
-router.put("/updateProblem/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
     try{
         const error = validateProblemItems(req.body);// author in body should be the same as current user.
         if(error){
