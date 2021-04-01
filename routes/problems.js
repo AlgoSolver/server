@@ -8,7 +8,7 @@ router.get('/', async (req,res)=>{
   let problems;
     try{
     problems = await Problem.paginate({
-      isPublished:true
+      // isPublished:true
     },getPagination(parseInt(req.query.page)-1,2))
     }catch(err){
       console.error(err);

@@ -3,7 +3,12 @@ const express = require("express");
 const router = express.Router();
 
 router.post("/", async(req, res) => {
+    if(!req.auth._id){
+      return res.status(402).json({message: "Not Authorized!"});
+    }
     try{
+        req.body.author = String(req.auth._id);
+        req.body.code.author =  String(req.auth._id);
         req.body.status = "Pending";// will raise an event after inserting to database any pending
         let error = await handleCode(req.body);
         if(error){
@@ -36,7 +41,7 @@ router.get("/:id", async(req, res) => {
 router.get("/user/:uid", async(req, res) => {
     try{
         const submissions = await Submission.find({author:req.params.uid});
-        res.send(submissions); 
+        res.send(submissions);
     }
     catch(err){
         return res.status(404).send({message : "User not found"});
