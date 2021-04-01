@@ -6,7 +6,8 @@ const EventEmitter = require("events");
 const { extend } = require("joi");
 const { TIMEOUT } = require("dns");
 
-const playgroundURL = "http://localhost:3000/";
+//const playgroundURL = "http://localhost:3000/";
+const playgroundURL = "https://algosolver-playground.herokuapp.com/";
 const runCodePath = "api/runCode", runCheckerPath = "api/runChecker";
 
 class SubmissionHandler extends EventEmitter{
