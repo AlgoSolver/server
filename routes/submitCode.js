@@ -33,5 +33,14 @@ router.get("/:id", async(req, res) => {
     }
 });
 
+router.get("/user/:uid", async(req, res) => {
+    try{
+        const submissions = await Submission.find({author:req.params.uid});
+        res.send(submissions); 
+    }
+    catch(err){
+        return res.status(404).send({message : "User not found"});
+    }
+});
 
 module.exports = router;
