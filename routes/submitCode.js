@@ -28,7 +28,7 @@ router.post("/", async(req, res) => {
 
 router.get("/:id", async(req, res) => {
     try{
-        const submission = await getSubmission(req.params.id);
+        const submission = await Submission.findById(req.params.id).populate("problem code","title sourceCode language");
         if(!submission)
             return res.status(404).send({message : "Submission not found"});
         return res.send(submission);
@@ -40,7 +40,7 @@ router.get("/:id", async(req, res) => {
 
 router.get("/user/:uid", async(req, res) => {
     try{
-        const submissions = await Submission.find({author:req.params.uid}).populate("problem","title language");
+        const submissions = await Submission.find({author:req.params.uid}).populate("problem","title");
         res.send(submissions);
     }
     catch(err){
