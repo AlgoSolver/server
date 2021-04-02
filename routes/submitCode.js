@@ -40,7 +40,7 @@ router.get("/:id", async(req, res) => {
 
 router.get("/user/:uid", async(req, res) => {
     try{
-        const submissions = await Submission.find({author:req.params.uid});
+        const submissions = await Submission.find({author:req.params.uid}).populate("problem","title language");
         res.send(submissions);
     }
     catch(err){
