@@ -1,6 +1,6 @@
 const {Problem} = require("../models/problem");
 const express = require("express");
-const getPagination = require('../lib/getPagination');
+const getPagination = require('../utils/getPagination');
 
 const router = express.Router();
 

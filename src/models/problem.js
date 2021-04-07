@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
-const User = require("./user.js");
-const Code = require("./code");
+
 const mongoosePaginate = require("mongoose-paginate-v2");
 const joiTestSetSchema = Joi.object({
     constraints: Joi.string().required(),

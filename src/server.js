@@ -7,8 +7,13 @@ const cors = require('cors')
 const connect = require("./services/db");
 require("dotenv").config({ path: ".env" });
 const checkAuth = require('./resources/_global-middlewares/check-auth')
-const userRoutes = require('./resources/user/user.routes');
 
+
+const userRoutes = require('./resources/user/user.routes');
+// untill khalid chnage it to /resource/problem
+const problems = require('./routes/problems');
+// untill khalid chnage it to /resource/submission
+const submissionsRouter = require("./routes/submitCode");
 
 // variables
 const app = express();
@@ -43,8 +48,14 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ encoded: true }));
 app.use(checkAuth)
+
 // routes
 app.use('/api/user',userRoutes);
+// untill khalid chnage it to /resource/problem
+app.use("/api/problems", problems);
+// untill khalid chnage it to /resource/submission
+app.use("/api/submissions", submissionsRouter);
+
 // handle Error 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
