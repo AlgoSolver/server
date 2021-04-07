@@ -11,8 +11,6 @@ exports.login = async (req, res, next) => {
 		user = await User.findOne({ email }).select(
 			"password email username _id"
 		);
-		users = await User.find({});
-		console.log(users)
 	} catch (err) {
 		return res.status(500).json({ message: "Unknowen error" });
 	}
