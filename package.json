@@ -37,6 +37,7 @@
     "morgan": "^1.10.0",
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
-    "package.json": "^2.0.1"
+    "package.json": "^2.0.1",
+    "netmask": ">=2.0.1"
   }
 }
