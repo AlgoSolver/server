@@ -10,9 +10,9 @@ const checkAuth = require('./resources/_global-middlewares/check-auth')
 
 
 const userRoutes = require('./resources/user/user.routes');
-// untill khalid chnage it to /resource/problem
+// untill khalid change it to /resource/problem
 const problems = require('./routes/problems');
-// untill khalid chnage it to /resource/submission
+// untill khalid change it to /resource/submission
 const submissionsRouter = require("./routes/submitCode");
 
 // variables
