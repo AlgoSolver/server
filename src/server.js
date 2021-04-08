@@ -1,3 +1,4 @@
+// Requiring dependencies
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 const morgan = require("morgan");
@@ -9,16 +10,18 @@ require("dotenv").config({ path: ".env" });
 const checkAuth = require('./resources/_global-middlewares/check-auth')
 
 
-const userRoutes = require('./resources/user/user.routes');
-// untill khalid chnage it to /resource/problem
-const problems = require('./routes/problems');
-// untill khalid chnage it to /resource/submission
-const submissionsRouter = require("./routes/submitCode");
-
-// variables
+// Initializing app
 const app = express();
+
+
+
+// Envirnoment variables
 const port = process.env.PORT || 5000;
 const origin = process.env.CLIENT_DEV_URL;
+
+
+
+
 // rate limit: limiting the number of request per amount of time
 // later on i will make a bunch of rate limit to ensure that
 // Too many accounts created from one IP or reset too many password etc
@@ -29,7 +32,10 @@ const limiter = rateLimit({
 		"Too many request created from this IP, please try again after an 15 minutes",
 });
 
-// middlewares
+
+
+
+// Using middlewares
 if (process.env.NODE_ENV === "production") {
 	// origin = process.env.CLIENT_PROD_URL;
 	app.use(limiter);
@@ -49,12 +55,31 @@ app.use(express.json());
 app.use(express.urlencoded({ encoded: true }));
 app.use(checkAuth)
 
-// routes
+
+
+
+
+// Requiring routes
+
+const userRoutes = require('./resources/user/user.routes');
+// untill khalid chnage it to /resource/problem
+const problems = require('./routes/problems');
+// untill khalid chnage it to /resource/submission
+const submissionsRouter = require("./routes/submitCode");
+
+const tracks = require('./resources/tracks/tracks.routes');  
+
+// Using routes
+
 app.use('/api/user',userRoutes);
 // untill khalid chnage it to /resource/problem
 app.use("/api/problems", problems);
 // untill khalid chnage it to /resource/submission
 app.use("/api/submissions", submissionsRouter);
+
+app.use('/practiceTracks/:nameOfTrack/:childTrack')
+
+
 
 // handle Error 
 // catch 404 and forward to error handler
@@ -76,7 +101,9 @@ app.use((err, req, res, next) => {
   });
 });
 
-// connect to the db then running the server
+
+
+// connect to the db then running the server on port 5000
 const runServer = async () => {
 	try {
 		await connect(`${process.env.DATABASE}`);
@@ -87,4 +114,6 @@ const runServer = async () => {
 		console.error(err);
 	}
 };
+
+
 module.exports = runServer;
