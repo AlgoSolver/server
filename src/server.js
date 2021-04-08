@@ -10,14 +10,18 @@ require("dotenv").config({ path: ".env" });
 const checkAuth = require('./resources/_global-middlewares/check-auth')
 
 
+
 // Initializing app
 const app = express();
+
+
 
 
 
 // Envirnoment variables
 const port = process.env.PORT || 5000;
 const origin = process.env.CLIENT_DEV_URL;
+
 
 
 
@@ -31,6 +35,7 @@ const limiter = rateLimit({
 	message:
 		"Too many request created from this IP, please try again after an 15 minutes",
 });
+
 
 
 
@@ -60,24 +65,19 @@ app.use(checkAuth)
 
 
 // Requiring routes
-
-const userRoutes = require('./resources/user/user.routes');
-// untill khalid chnage it to /resource/problem
-const problems = require('./routes/problems');
-// untill khalid chnage it to /resource/submission
+const userRoutes = require('./resources/user/user.routes'); // untill khalid chnage it to /resource/problem
+const problems = require('./routes/problems'); // untill khalid chnage it to /resource/submission
 const submissionsRouter = require("./routes/submitCode");
-
 const tracks = require('./resources/tracks/tracks.routes');  
 
+
+
 // Using routes
-
-app.use('/api/user',userRoutes);
-// untill khalid chnage it to /resource/problem
-app.use("/api/problems", problems);
-// untill khalid chnage it to /resource/submission
+app.use('/api/user',userRoutes); // untill khalid chnage it to /resource/problem
+app.use("/api/problems", problems); // untill khalid chnage it to /resource/submission
 app.use("/api/submissions", submissionsRouter);
-
 app.use('/practiceTracks/:nameOfTrack/:childTrack')
+
 
 
 
