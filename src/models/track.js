@@ -14,17 +14,19 @@ const trackSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
+    isAdmin: {
+      type: Boolean,
+      default: false
+    }
     parentTrack: {
-<<<<<<< HEAD
       type:mongoose.ObjectId,
       ref:'Track'
-=======
       type: String,
       required: true
->>>>>>> 8dc87b2e99e44d3908d5be583b430266959bb0e2
     },
     prerequistes: {
-      type: String
+      type: String,
+      default: ""
     },
     problems:{
       type:[mongoose.ObjectId],
@@ -34,21 +36,5 @@ const trackSchema = new Schema(
   { timestamps: true }
 );
 
-<<<<<<< HEAD
-=======
-function validateTrack(track) {
-  const schema = {
-    title: Joi.string().min(10).max(50).required(),
-    content: Joi.string().min(8).max(20).required(),
-    author: Joi.string().required(),
-    childrenTracks: Joi.string().required(),
-    parentTrack: Joi.string().required(),
-    prerequistes: Joi.string().required()
-  };
->>>>>>> 8dc87b2e99e44d3908d5be583b430266959bb0e2
 
-  return Joi.validate(track, schema);
-}
- 
-exports.validate = validateTrack;
 module.exports = mongoose.model('Track', trackSchema);

@@ -1,37 +1,38 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
+const mongoose = require("mongoose");
+const Joi = require("joi");
+const User = require("../user/user.model");
+const User = require("../user/user.model");
+const User = require("../user/problem.model");
+
 const Schema = mongoose.Schema;
 
 const trackSchema = new Schema(
   {
     title: {
-      type: String
+      type: String,
     },
     content: {
-      type: String
+      type: String,
     },
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'User'
+      ref: "User",
     },
     parentTrack: {
-      type:mongoose.ObjectId,
-      ref:'Track',
+      type: mongoose.ObjectId,
+      ref: "Track",
       type: String,
-      required: true
+      required: true,
     },
     prerequistes: {
-      type: String
+      type: String,
     },
-    problems:{
-      type:[mongoose.ObjectId],
-      ref:'Problem'
-    }
+    problems: {
+      type: [mongoose.ObjectId],
+      ref: "Problem",
+    },
   },
   { timestamps: true }
 );
 
-
- 
-exports.validate = validateTrack;
-module.exports = mongoose.model('Track', trackSchema);
+module.exports = mongoose.model("Track", trackSchema);
