@@ -17,7 +17,19 @@ exports.getTrack = async (req, res) => {};
 
 exports.getAllTracks = async (req, res) => {};
 
-exports.updateTrack = async (req, res) => {};
+exports.updateTrack = async (req, res) => {
+  const track = tracksModel.findById(req.params.id);
+  try {
+    if (track.username === req.body.username) {
+      await track.updateOne({ $set: req.body });
+      res.status(200).json("Track Updated Successfully");
+    } else {
+      res.status(403).json("Unauthorized permission");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 // Upvote track
 exports.upvoteTrack = async (req, res) => {};
