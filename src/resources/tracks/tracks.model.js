@@ -35,10 +35,6 @@ const trackSchema = new Schema(
       type: Array,
       default: [],
     },
-    downvoteTrack: {
-      type: Array,
-      default: [],
-    },
   },
   { timestamps: true }
 );

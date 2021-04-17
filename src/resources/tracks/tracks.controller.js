@@ -34,10 +34,22 @@ exports.updateTrack = async (req, res) => {
 };
 
 // Upvote track
-exports.upvoteTrack = async (req, res) => {};
-
-// Downvote track
-exports.downvoteTrack = async (req, res) => {};
+exports.upvoteTrack = async (req, res) => {
+  try {
+    const track = tracksModel.findById(req.params.id);
+    // after finding this track, I'm  gonna check if this post in the upvoteTrack array or not
+    if (!track.upvoteTrack.include(req.body.username) === req.body.username) {
+      await track.updateOne({ $push: { upvoteTrack: req.body.username } });
+      res.status(200).json("Track has been upvoted");
+    } else {
+      // In case downvoted, just pull out this user
+      await track.updateOne({ $pull: { upvoteTrack: req.body.username } });
+      res.status(200).json("Track has been downvoted");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 exports.deleteTrack = async (req, res) => {
   const track = tracksModel.findById(req.params.id);
