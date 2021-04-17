@@ -31,7 +31,7 @@ const trackSchema = new Schema(
       type: [mongoose.ObjectId],
       ref: "Problem",
     },
-    upvoteTrack: {
+    voteTrack: {
       type: Array,
       default: [],
     },

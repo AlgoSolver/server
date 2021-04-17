@@ -34,7 +34,7 @@ exports.updateTrack = async (req, res) => {
 };
 
 // Upvote track
-exports.upvoteTrack = async (req, res) => {
+exports.voteTrack = async (req, res) => {
   try {
     const track = tracksModel.findById(req.params.id);
     // after finding this track, I'm  gonna check if this post in the upvoteTrack array or not
