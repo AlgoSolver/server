@@ -1,5 +1,7 @@
 const tracksModels = require("./tracks.model");
-const tTracksValidator = require("./tracks.validator");
+const tracksValidator = require("./user.validator");
+const userModel = require("../user/user.controller.js");
+const userValidator = require("../user/user.validator.js");
 
 exports.createTrack = async (req, res) => {};
 
