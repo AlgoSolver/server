@@ -1,22 +1,18 @@
-const Tracks = require('./tracks.model');
+const tracksModels = require("./tracks.model");
+const tTracksValidator = require("./tracks.validator");
 
+exports.createTrack = async (req, res) => {};
 
-exports.createTrack = async (req, res, next) => {
+exports.getTrack = async (req, res) => {};
 
-}
+exports.getAllTracks = async (req, res) => {};
 
-exports.getTrack = async (req, res, next) => {
+exports.updateTrack = async (req, res) => {};
 
-}
+// Upvote track
+exports.upvoteTrack = async (req, res) => {};
 
-exports.addTrack = async (req, res, next) => {
+// Downvote track
+exports.downvoteTrack = async (req, res) => {};
 
-}
-
-exports.updateTrack = async (req, res, next) => {
-
-}
-
-exports.deleteTrack = async (req, res, next) => {
-
-}
+exports.deleteTrack = async (req, res) => {};

@@ -31,6 +31,14 @@ const trackSchema = new Schema(
       type: [mongoose.ObjectId],
       ref: "Problem",
     },
+    upvoteTrack: {
+      type: Array,
+      default: [],
+    },
+    downvoteTrack: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );
