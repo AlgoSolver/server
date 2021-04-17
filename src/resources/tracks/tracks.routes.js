@@ -23,6 +23,6 @@ router.post("/:id/up-vote", trackController.upvoteTrack);
 router.post("/:id/down-vote", trackController.downvoteTrack);
 
 // Delete track + care about the access level TODO isAuth as middleware
-router.post("/delete-track/:id", trackController.deleteTrack);
+router.delete("/delete-track/:id", trackController.deleteTrack);
 
 module.exports = router;

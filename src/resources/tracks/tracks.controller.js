@@ -24,7 +24,9 @@ exports.updateTrack = async (req, res) => {
       await track.updateOne({ $set: req.body });
       res.status(200).json("Track Updated Successfully");
     } else {
-      res.status(403).json("Unauthorized permission");
+      res
+        .status(403)
+        .json("Unauthorized permission: You can only delete your post");
     }
   } catch (err) {
     res.status(500).json(err);
@@ -37,4 +39,18 @@ exports.upvoteTrack = async (req, res) => {};
 // Downvote track
 exports.downvoteTrack = async (req, res) => {};
 
-exports.deleteTrack = async (req, res) => {};
+exports.deleteTrack = async (req, res) => {
+  const track = tracksModel.findById(req.params.id);
+  try {
+    if (track.username === req.body.username) {
+      await track.updateOne();
+      res.status(200).json("Track Deleted Successfully");
+    } else {
+      res
+        .status(403)
+        .json("Unauthorized permission: You can only delete your post");
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
