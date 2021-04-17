@@ -1,9 +1,17 @@
-const tracksModels = require("./tracks.model");
+const tracksModel = require("./tracks.model");
 const tracksValidator = require("./user.validator");
 const userModel = require("../user/user.controller.js");
 const userValidator = require("../user/user.validator.js");
 
-exports.createTrack = async (req, res) => {};
+exports.createTrack = async (req, res) => {
+  const newTrack = new tracksModel(req.body);
+  try {
+    const savedTrack = await newTrack.save();
+    res.status(200).json(savedTrack);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 exports.getTrack = async (req, res) => {};
 
