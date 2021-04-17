@@ -13,12 +13,19 @@ exports.createTrack = async (req, res) => {
   }
 };
 
-exports.getTrack = async (req, res) => {};
+exports.getTrack = async (req, res) => {
+  try {
+    const track = await tracksModel.findById(req.params.id);
+    res.status(200).json(track);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
 
 exports.getAllTracks = async (req, res) => {};
 
 exports.updateTrack = async (req, res) => {
-  const track = tracksModel.findById(req.params.id);
+  const track = await tracksModel.findById(req.params.id);
   try {
     if (track.username === req.body.username) {
       await track.updateOne({ $set: req.body });
@@ -36,7 +43,7 @@ exports.updateTrack = async (req, res) => {
 // Upvote track
 exports.voteTrack = async (req, res) => {
   try {
-    const track = tracksModel.findById(req.params.id);
+    const track = await tracksModel.findById(req.params.id);
     // after finding this track, I'm  gonna check if this post in the upvoteTrack array or not
     if (!track.upvoteTrack.include(req.body.username) === req.body.username) {
       await track.updateOne({ $push: { upvoteTrack: req.body.username } });
