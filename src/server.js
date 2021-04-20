@@ -31,7 +31,7 @@ const limiter = rateLimit({
 
 // middlewares
 if (process.env.NODE_ENV === "production") {
-	// origin = process.env.CLIENT_PROD_URL;
+	origin = process.env.CLIENT_PROD_URL;
 	app.use(limiter);
 } else {
 	// debugging tool in the console : showing the requests
@@ -56,7 +56,7 @@ app.use("/api/problems", problems);
 // untill khalid chnage it to /resource/submission
 app.use("/api/submissions", submissionsRouter);
 
-// handle Error 
+// handle Error
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404,"page not found"));
