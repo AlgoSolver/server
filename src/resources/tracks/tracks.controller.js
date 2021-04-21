@@ -22,7 +22,16 @@ exports.getTrack = async (req, res) => {
   }
 };
 
-exports.getAllTracks = async (req, res) => {};
+exports.getAllTracks = async (req, res) => {
+  let trackArray = [];
+  try {
+    // Instead of await, I'm gonna use multiple promises
+    // So, first I am gonna find the current user
+    
+  } catch (err) {
+    res.satus(500).json(err);
+  }
+};
 
 exports.updateTrack = async (req, res) => {
   const track = await tracksModel.findById(req.params.id);
