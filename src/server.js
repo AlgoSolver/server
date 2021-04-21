@@ -18,7 +18,7 @@ const submissionsRouter = require("./routes/submitCode");
 // variables
 const app = express();
 const port = process.env.PORT || 5000;
-const origin = process.env.CLIENT_DEV_URL;
+let origin = process.env.CLIENT_DEV_URL;
 // rate limit: limiting the number of request per amount of time
 // later on i will make a bunch of rate limit to ensure that
 // Too many accounts created from one IP or reset too many password etc
