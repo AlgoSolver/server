@@ -251,7 +251,7 @@ exports.emailVerification = async (req, res, next) => {
 		);
 
 		const text = `<h1>Please use the following link to change your account password</h1>
-          <p>${process.env.CLIENT_URL}/accounts/new-password/${token}</p>
+          <p>${process.env.NODE_ENV === "production" ?  process.env.CLIENT_PROD_URL : process.env.CLIENT_DEV_URL}/accounts/new-password/${token}</p>
           <hr />
           <p>this email may conatan sensitive information</p>
           <p>${process.env.NODE_ENV === "production" ?  process.env.CLIENT_PROD_URL : process.env.CLIENT_DEV_URL}</p>
