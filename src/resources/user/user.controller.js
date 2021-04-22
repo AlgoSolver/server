@@ -147,7 +147,7 @@ exports.signup = async (req, res, next) => {
 		const e = send(
 			email,
 			"Activate Email",
-			activateAccountTemp(process.env.CLIENT_URL, token)
+			activateAccountTemp(process.env.NODE_ENV === "production" ?  process.env.CLIENT_PROD_URL : process.env.CLIENT_DEV_URL, token)
 		);
 	} catch (err) {
 		return res
@@ -254,7 +254,7 @@ exports.emailVerification = async (req, res, next) => {
           <p>${process.env.CLIENT_URL}/accounts/new-password/${token}</p>
           <hr />
           <p>this email may conatan sensitive information</p>
-          <p>${process.env.CLIENT_URL}</p>
+          <p>${process.env.NODE_ENV === "production" ?  process.env.CLIENT_PROD_URL : process.env.CLIENT_DEV_URL}</p>
        `;
 		existingUser.resetPasswordLink = token;
 		await existingUser.save();
