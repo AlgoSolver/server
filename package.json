@@ -4,7 +4,8 @@
   "description": "012",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -31,9 +32,11 @@
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "mailgun-js": "^0.22.0",
-    "mailgun.js": "^3.3.0",
+    "mailgun.js": "^3.1.1",
+    "mongoose": "^5.12.3",
     "mongoose-paginate-v2": "^1.3.17",
     "morgan": "^1.10.0",
+    "netmask": "^2.0.2",
     "node-fetch": "^2.6.1",
     "package.json": "^2.0.1"
   },

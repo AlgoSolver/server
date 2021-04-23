@@ -1,10 +1,10 @@
-name: CI Main
+name: CI else
 
 on:
   push:
-    branches: [ main ]
+    branches: [ '*' ]
   pull_request:
-    branches: [ main ]
+    branches: [ '*' ]
     
 jobs:
   build:
@@ -40,5 +40,5 @@ jobs:
 
     - name: Other Branches!
       run: |
-        echo "i'm in main branch"
+        echo "i'm not in main branch"
   # Deploying running on herouk

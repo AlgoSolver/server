@@ -9,13 +9,20 @@ const connect = require("./services/db");
 require("dotenv").config({ path: ".env" });
 const checkAuth = require("./resources/_global-middlewares/check-auth");
 
-// Initializing app
+
+const userRoutes = require('./resources/user/user.routes');
+const codeRoutes = require('./resources/code/code.routes');
+// untill khalid change it to /resource/problem
+const problems = require('./routes/problems');
+// untill khalid change it to /resource/submission
+const submissionsRouter = require("./routes/submitCode");
+
+// variables
 const app = express();
 
 // Envirnoment variables
 const port = process.env.PORT || 5000;
-const origin = process.env.CLIENT_DEV_URL;
-
+let origin = process.env.CLIENT_DEV_URL;
 // rate limit: limiting the number of request per amount of time
 // later on i will make a bunch of rate limit to ensure that
 // Too many accounts created from one IP or reset too many password etc
@@ -28,8 +35,8 @@ const limiter = rateLimit({
 
 // Using middlewares
 if (process.env.NODE_ENV === "production") {
-  // origin = process.env.CLIENT_PROD_URL;
-  app.use(limiter);
+	origin = process.env.CLIENT_PROD_URL;
+	app.use(limiter);
 } else {
   // debugging tool in the console : showing the requests
   app.use(morgan());
@@ -52,9 +59,12 @@ const problems = require("./routes/problems"); // untill khalid chnage it to /re
 const submissionsRouter = require("./routes/submitCode");
 const tracks = require("./resources/tracks/tracks.routes");
 
-// Using routes
-app.use("/api/user", userRoutes); // untill khalid chnage it to /resource/problem
-app.use("/api/problems", problems); // untill khalid chnage it to /resource/submission
+// routes
+app.use('/api/user',userRoutes);
+app.use('/api/code',codeRoutes);
+// untill khalid chnage it to /resource/problem
+app.use("/api/problems", problems);
+// untill khalid chnage it to /resource/submission
 app.use("/api/submissions", submissionsRouter);
 // app.use('/practiceTracks/:nameOfTrack/:childTrack')
 
@@ -89,5 +99,4 @@ const runServer = async () => {
     console.error(err);
   }
 };
-
 module.exports = runServer;

@@ -2,22 +2,7 @@ const Joi = require('joi');
 Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require('mongoose');
 
-const Code = new mongoose.model('Code', new mongoose.Schema({
-  author: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  sourceCode: {
-    type : String, // to store our source code
-    required : true
-  },
-  language: {
-    type: String,
-    required: true
-  },
-}, {timestamps: true}));
-
+const Code = require('../resources/code/code.model');
 function validateCode(code) {
   console.log("called validate code");
   const schema = Joi.object({
