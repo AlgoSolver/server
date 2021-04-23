@@ -2,7 +2,26 @@ const Joi = require('joi');
 Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require('mongoose');
 
-const Code = require('../resources/code/code.model');
+const codeSchema = new mongoose.Schema({
+  code:{
+    type:String,
+    default:`#include <iostream>;
+    using namespace std;
+    int main(){
+    }`
+  },
+  language: {
+    type: String,
+    default:'C++',
+  },
+  author:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User",
+    required:true
+  }
+},{timestamps:true})
+const Code = mongoose.model('Code',codeSchema);
+
 function validateCode(code) {
   console.log("called validate code");
   const schema = Joi.object({

@@ -4,9 +4,10 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 
 const codeSchema = new Schema({
   name:{
-    type:String
+    type:String,
+    required:true
   },
-  sourceCode:{
+  code:{
     type:String,
     default:`#include <iostream>;
     using namespace std;
@@ -26,4 +27,4 @@ const codeSchema = new Schema({
 
 codeSchema.plugin(mongoosePaginate)
 
-module.exports = model('Code',codeSchema)
+module.exports = model('Playground',codeSchema)

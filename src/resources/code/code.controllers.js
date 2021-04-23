@@ -1,12 +1,12 @@
 const Code = require('./code.model');
 const getPagination = require('../../utils/getPagination');
 exports.codes = async (req,res)=>{
-
+  console.log(req.query)
   let codes;
   try{
     codes = await Code.paginate({
       author:req.auth._id
-    },getPagination(parseInt(req.body.page)-1,10));
+    },getPagination(parseInt(req.query.page)-1,10));
   }catch(err){
     return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
   }
