@@ -110,6 +110,6 @@ const problemSchema = new mongoose.Schema({
 // handling pagination -- IG
 problemSchema.plugin(mongoosePaginate);
 
-const Problem = new mongoose.model("Problem", problemSchema);
+const Problem = mongoose.model("Problem", problemSchema);
 
 module.exports = Problem;
