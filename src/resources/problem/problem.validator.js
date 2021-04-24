@@ -52,7 +52,7 @@ exports.validateProblem = (problem) => {
 }
 
 exports.validateProblemItems = (problem) => {// same as previous except nothing is required to make it easier to update problems
-    schema = Joi.object({
+    const schema = Joi.object({
         title: Joi.string(),
         description: Joi.string(),
         author : Joi.objectId(),
