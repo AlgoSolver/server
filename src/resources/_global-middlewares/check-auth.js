@@ -3,12 +3,13 @@ const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res, next) => {
   req.auth = { notAuth: true };
-  if (!req.cookies.user) {
+  const user = req?.cookies?.algosolver_user_credential || null;
+  if (!user) {
     return next();
   }
   let decodedToken;
   try {
-    decodedToken = jwt.verify(req.cookies.user, process.env.JWT_KEY);
+    decodedToken = jwt.verify(user, process.env.JWT_KEY);
   } catch (err) {}
   if (!decodedToken || !decodedToken.userId) {
     return next();

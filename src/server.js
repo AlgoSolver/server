@@ -38,6 +38,7 @@ if (process.env.NODE_ENV === "production") {
 	// debugging tool in the console : showing the requests
 	app.use(morgan());
 }
+app.use(cookieParser());
 app.use(
 	cors({
 		origin,
@@ -45,7 +46,6 @@ app.use(
 		exposedHeaders: ["Set-Cookie", "Date", "ETag"],
 	})
 );
-app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ encoded: true }));
 app.use(checkAuth)
