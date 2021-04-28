@@ -41,14 +41,14 @@ exports.login = async (req, res, next) => {
 			expiresIn: "365d",
 		}
 	);
-	res.cookie("user", token, {
+	res.cookie("algosolver_user_credential", token, {
 		httpOnly: true,
 		max: 1000 * 60 * 60 * 24 * 12, // 1 year
 	});
 	return res.status(200).json({ ...user._doc });
 };
 exports.logout = async (req, res) => {
-	res.clearCookie("user");
+	res.clearCookie("algosolver_user_credential");
 	return res.status(200).json({ notAuth: true });
 };
 exports.getCurrent = async (req, res) => {
@@ -109,7 +109,7 @@ exports.googleLogin = async (req, res) => {
 			expiresIn: "365d",
 		}
 	);
-	res.cookie("user", token, {
+	res.cookie("algosolver_user_credential", token, {
 		httpOnly: true,
 		max: 1000 * 60 * 60 * 24 * 12, // 1 year
 	});
