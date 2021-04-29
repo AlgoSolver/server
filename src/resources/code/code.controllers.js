@@ -6,7 +6,12 @@ exports.codes = async (req,res)=>{
   try{
     codes = await Code.paginate({
       author:req.auth._id
-    },getPagination(parseInt(req.query.page)-1,10));
+    },{
+      sort:{
+        updatedAt:-1
+      },
+      ...getPagination(parseInt(req.query.page)-1,10)
+    });
   }catch(err){
     return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
   }
@@ -69,14 +74,14 @@ exports.deleteCode = async (req,res)=>{
   if(!code){
     return res.status(400).send({message : "no playground with this id ..."})
   }
-  if(code._id !== req.auth._id){
+  if(code.author?.toString() != req.auth._id){
     return res.status(400).send({message : "Unauthrized"})
   }
   try{
     await code.remove();
-    await code.save();
   }catch(err){
-    return code.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+    console.log(err)
+    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
   }
   return res.json({id})
 }
