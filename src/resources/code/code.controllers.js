@@ -42,7 +42,7 @@ exports.createCode = async (req,res)=>{
 }
 exports.updateCode = async (req,res)=>{
   const {id} = req.params;
-  const {name} = req.body;
+  const data = req.body;
   let code;
   try{
     code = await Code.findById(id);
@@ -52,11 +52,12 @@ exports.updateCode = async (req,res)=>{
   if(!code){
     return res.status(400).send({message : "no playground with this id ..."})
   }
-  if(code._id !== req.auth._id){
+  if(code.author?.toString() != req.auth._id){
     return res.status(400).send({message : "Unauthrized"})
   }
   try{
-     code.name = name;
+     if(data.name) code.name = data.name;
+     if(data.code) code.code = data.code;
      await code.save();
   }catch(err){
     return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})

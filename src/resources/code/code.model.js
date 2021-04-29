@@ -10,9 +10,11 @@ const codeSchema = new Schema({
   code:{
     type:String,
     default:`#include <iostream>;
-    using namespace std;
-    int main(){
-    }`
+using namespace std;
+int main(){
+  cout<<"Hello, AlgoSolver!"<<endl;
+  return 0;
+}`
   },
   language: {
     type: String,
