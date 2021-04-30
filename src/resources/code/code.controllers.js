@@ -33,6 +33,9 @@ exports.code = async (req,res)=>{
 exports.createCode = async (req,res)=>{
   const {name} = req.body;
   let code = new Code({name,author:req.auth._id});
+  if(req.body.code){
+    code.code = req.body.code;
+  }
   try{
     await code.save();
   }catch(err){
