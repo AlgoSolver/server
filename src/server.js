@@ -11,10 +11,8 @@ const checkAuth = require('./resources/_global-middlewares/check-auth')
 
 const userRoutes = require('./resources/user/user.routes');
 const codeRoutes = require('./resources/code/code.routes');
-// untill khalid change it to /resource/problem
-const problems = require('./routes/problems');
-// untill khalid change it to /resource/submission
-const submissionsRouter = require("./routes/submitCode");
+const problems = require('./resources/problem/problem.routes');
+const submissionsRouter = require("./resources/submission/submission.routes");
 
 // variables
 const app = express();
@@ -53,9 +51,7 @@ app.use(checkAuth)
 // routes
 app.use('/api/user',userRoutes);
 app.use('/api/code',codeRoutes);
-// untill khalid chnage it to /resource/problem
 app.use("/api/problems", problems);
-// untill khalid chnage it to /resource/submission
 app.use("/api/submissions", submissionsRouter);
 
 // handle Error
