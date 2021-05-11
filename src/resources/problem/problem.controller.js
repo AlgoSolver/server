@@ -2,11 +2,14 @@ const Problem = require("./problem.model");
 const {validateProblem, validateProblemItems} = require("./problem.validator");
 const getPagination = require('../../utils/getPagination');
 
+const selectedFields = "title description timeLimit memoryLimit editorial";
+
 exports.getProblems = async (req, res) => {
     try{
         const problems = await Problem.paginate({
-        //isPublished:true
-        },getPagination(parseInt(req.query.page)-1,2));
+            isPublished:true
+        },{...getPagination(parseInt(req.query.page)-1,2), select : selectedFields}
+        );
         return res.json(problems)
     }
     catch(err){
@@ -18,7 +21,7 @@ exports.getProblems = async (req, res) => {
 exports.getProblem = async (req,res)=>{
     try{
         const problem = await Problem.findById(req.params.id)
-        .select("title description timeLimit memoryLimit editorial");
+        .select(selectedFields);
         return res.json(problem)
     }
     catch(err){

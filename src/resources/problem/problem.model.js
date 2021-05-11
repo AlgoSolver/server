@@ -85,21 +85,20 @@ const problemSchema = new mongoose.Schema({
         // also when play ground is hosted we should add validation that checker, code are correct.
     },
     modelAnswer: {// should be required before publishing problem
-        type: ObjectId,
-        ref: "Code",
+        type: String,
         required: function () {// if is published then code should be required
             return this.isPublished;
         }
     },
     checker: {// should be required before publishing problem
-        type: ObjectId,
+        type: String,
         ref: "Code",
         required: function () {// if is published then code should be required
             return this.isPublished;
         }
     },
     validator: {// should be required before publishing problem
-        type: ObjectId,
+        type: String,
         ref: "Code",
         required: function () {// if is published then code should be required
             return this.isPublished;
