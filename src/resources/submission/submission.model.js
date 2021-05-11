@@ -13,10 +13,9 @@ const submissionSchema = new mongoose.Schema( {
       ref: 'User',
       required: true,
     },
-    code: {
-      type: mongoose.Types.ObjectId, // to store sourcce as data in the form of arrays.
-      ref: "Code",
-      required: true,
+    sourceCode: {
+      type: String,
+      required: true
     },
     status: {
       type : String,
@@ -36,7 +35,9 @@ const submissionSchema = new mongoose.Schema( {
       type: Number,
       default: 0,
     },
-
+    errorMessage : {
+      type : String
+    }
 }, {timestamps: true});
 
 const Submission = mongoose.model('Submission', submissionSchema);
