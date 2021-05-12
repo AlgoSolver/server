@@ -28,7 +28,7 @@ exports.createSubmission = async(req, res) => {
 
 exports.getSubmission = async(req, res) => {
     try{
-        const submission = await Submission.findById(req.params.id).populate("problem","title");
+        const submission = await Submission.findById(req.params.id).populate("problem code","title sourceCode language");
         if(!submission)
             return res.status(404).send({message : "Submission not found"});
         return res.send(submission);
@@ -40,9 +40,7 @@ exports.getSubmission = async(req, res) => {
 
 exports.getUserSubmissions = async(req, res) => {
     try{
-        const submissions = await Submission.find({author:req.params.uid}).sort({
-          createdAt:-1
-        }).populate("problem","title");
+        const submissions = await Submission.find({author:req.params.uid}).populate("problem","title");
         res.send(submissions);
     }
     catch(err){
