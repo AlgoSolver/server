@@ -28,7 +28,7 @@ exports.createSubmission = async(req, res) => {
 
 exports.getSubmission = async(req, res) => {
     try{
-        const submission = await Submission.findById(req.params.id).populate("problem code","title sourceCode language");
+        const submission = await Submission.findById(req.params.id).populate("problem","title");
         if(!submission)
             return res.status(404).send({message : "Submission not found"});
         return res.send(submission);

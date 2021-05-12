@@ -37,6 +37,10 @@ const submissionSchema = new mongoose.Schema( {
     },
     errorMessage : {
       type : String
+    },
+    language : {
+      type : String,
+      default : "C++"
     }
 }, {timestamps: true});
 
