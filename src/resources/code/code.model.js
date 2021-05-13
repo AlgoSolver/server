@@ -1,32 +1,34 @@
-const {Schema,model,Types} = require('mongoose');
+const { Schema, model, Types } = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
 
-
-const codeSchema = new Schema({
-  name:{
-    type:String,
-    required:true
-  },
-  code:{
-    type:String,
-    default:`#include <iostream>;
+const codeSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+    },
+    code: {
+      type: String,
+      default: `#include <iostream>;
 using namespace std;
 int main(){
   cout<<"Hello, AlgoSolver!"<<endl;
   return 0;
-}`
+}`,
+    },
+    language: {
+      type: String,
+      default: "C++",
+    },
+    author: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
   },
-  language: {
-    type: String,
-    default:'C++',
-  },
-  author:{
-    type:Schema.Types.ObjectId,
-    ref:"User",
-    required:true
-  }
-},{timestamps:true})
+  { timestamps: true }
+);
 
-codeSchema.plugin(mongoosePaginate)
+codeSchema.plugin(mongoosePaginate);
 
-module.exports = model('Playground',codeSchema)
+module.exports = model("Playground", codeSchema);

@@ -1,31 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const submissionStatusOptions = require("./submissionStatusOptions");
 
-const submissionSchema = new mongoose.Schema( {
+const submissionSchema = new mongoose.Schema(
+  {
     // According to schema description in: https://github.com/AlgoSolver/database-schema
     problem: {
       type: mongoose.Types.ObjectId,
-      ref: 'Problem',
+      ref: "Problem",
       required: true,
     },
     author: {
       type: mongoose.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
       required: true,
     },
     sourceCode: {
       type: String,
-      required: true
+      required: true,
     },
     status: {
-      type : String,
-      required : true,
-      default : "Pending",
-      enum : submissionStatusOptions
+      type: String,
+      required: true,
+      default: "Pending",
+      enum: submissionStatusOptions,
     },
-    expectedComplexity : {// the complexity of last passed testSet
-      type : String,
-      default : "No Expected Complexity"
+    expectedComplexity: {
+      // the complexity of last passed testSet
+      type: String,
+      default: "No Expected Complexity",
     },
     usedTime: {
       type: Number,
@@ -35,15 +37,17 @@ const submissionSchema = new mongoose.Schema( {
       type: Number,
       default: 0,
     },
-    errorMessage : {
-      type : String
+    errorMessage: {
+      type: String,
     },
-    language : {
-      type : String,
-      default : "C++"
-    }
-}, {timestamps: true});
+    language: {
+      type: String,
+      default: "C++",
+    },
+  },
+  { timestamps: true }
+);
 
-const Submission = mongoose.model('Submission', submissionSchema);
+const Submission = mongoose.model("Submission", submissionSchema);
 
 module.exports = Submission;

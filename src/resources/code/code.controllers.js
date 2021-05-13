@@ -1,91 +1,129 @@
-const Code = require('./code.model');
-const getPagination = require('../../utils/getPagination');
-exports.codes = async (req,res)=>{
-  console.log(req.query)
+const Code = require("./code.model");
+const getPagination = require("../../utils/getPagination");
+exports.codes = async (req, res) => {
+  console.log(req.query);
   let codes;
-  try{
-    codes = await Code.paginate({
-      author:req.auth._id
-    },{
-      sort:{
-        updatedAt:-1
+  try {
+    codes = await Code.paginate(
+      {
+        author: req.auth._id,
       },
-      ...getPagination(parseInt(req.query.page)-1,10)
-    });
-  }catch(err){
-    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+      {
+        sort: {
+          updatedAt: -1,
+        },
+        ...getPagination(parseInt(req.query.page) - 1, 10),
+      }
+    );
+  } catch (err) {
+    return res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
-  return res.json(codes)
-}
-exports.code = async (req,res)=>{
-  const {id} = req.params;
+  return res.json(codes);
+};
+exports.code = async (req, res) => {
+  const { id } = req.params;
   let code;
-  try{
+  try {
     code = await Code.findById(id);
-  }catch(err){
-    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+  } catch (err) {
+    return res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
-  if(!code){
-    return res.status(400).send({message : "no playground with this id ..."})
+  if (!code) {
+    return res.status(400).send({ message: "no playground with this id ..." });
   }
   return res.json(code);
-}
-exports.createCode = async (req,res)=>{
-  const {name} = req.body;
-  let code = new Code({name,author:req.auth._id});
-  if(req.body.code){
+};
+exports.createCode = async (req, res) => {
+  const { name } = req.body;
+  let code = new Code({ name, author: req.auth._id });
+  if (req.body.code) {
     code.code = req.body.code;
   }
-  try{
+  try {
     await code.save();
-  }catch(err){
-    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+  } catch (err) {
+    return res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
   return res.json(code);
-}
-exports.updateCode = async (req,res)=>{
-  const {id} = req.params;
+};
+exports.updateCode = async (req, res) => {
+  const { id } = req.params;
   const data = req.body;
   let code;
-  try{
+  try {
     code = await Code.findById(id);
-  }catch(err){
-    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+  } catch (err) {
+    return res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
-  if(!code){
-    return res.status(400).send({message : "no playground with this id ..."})
+  if (!code) {
+    return res.status(400).send({ message: "no playground with this id ..." });
   }
-  if(code.author?.toString() != req.auth._id){
-    return res.status(400).send({message : "Unauthrized"})
+  if (code.author?.toString() != req.auth._id) {
+    return res.status(400).send({ message: "Unauthrized" });
   }
-  try{
-     if(data.name) code.name = data.name;
-     if(data.code) code.code = data.code;
-     await code.save();
-  }catch(err){
-    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+  try {
+    if (data.name) code.name = data.name;
+    if (data.code) code.code = data.code;
+    await code.save();
+  } catch (err) {
+    return res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
   return res.status(201).json(code);
-}
-exports.deleteCode = async (req,res)=>{
-  const {id} = req.params;
+};
+exports.deleteCode = async (req, res) => {
+  const { id } = req.params;
   let code;
-  try{
+  try {
     code = await Code.findById(id);
-  }catch(err){
-    return code.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+  } catch (err) {
+    return code
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
-  if(!code){
-    return res.status(400).send({message : "no playground with this id ..."})
+  if (!code) {
+    return res.status(400).send({ message: "no playground with this id ..." });
   }
-  if(code.author?.toString() != req.auth._id){
-    return res.status(400).send({message : "Unauthrized"})
+  if (code.author?.toString() != req.auth._id) {
+    return res.status(400).send({ message: "Unauthrized" });
   }
-  try{
+  try {
     await code.remove();
-  }catch(err){
-    console.log(err)
-    return res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
+  } catch (err) {
+    console.log(err);
+    return res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
   }
-  return res.json({id})
-}
+  return res.json({ id });
+};

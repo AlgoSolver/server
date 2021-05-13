@@ -1,43 +1,54 @@
-const {validateProblem, createProblem,Problem, getProblems, updateProblem, validateProblemItems} = require("../models/problem");
+const {
+  validateProblem,
+  createProblem,
+  Problem,
+  getProblems,
+  updateProblem,
+  validateProblemItems,
+} = require("../models/problem");
 const express = require("express");
 
 const router = express.Router();
 
-
 router.get("/", (req, res) => {
-    res.send({message : "Welcome Our Tourist :) !!!"});
-})
+  res.send({ message: "Welcome Our Tourist :) !!!" });
+});
 
-router.post("/", async(req, res) => {
-    try{
-        const error = validateProblem(req.body);// author in body should be the same as current user.
-        if(error){
-            return res.status(400).send(error.details);
-        }
-        const problem = await createProblem(req.body);
-        res.status(200).send(problem);
+router.post("/", async (req, res) => {
+  try {
+    const error = validateProblem(req.body); // author in body should be the same as current user.
+    if (error) {
+      return res.status(400).send(error.details);
     }
-    catch(err){
-        console.error(err);
-        res.status(500).send({message : "Sorry we are facing an internal error please try again later ..."})
-    }
-})
+    const problem = await createProblem(req.body);
+    res.status(200).send(problem);
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .send({
+        message:
+          "Sorry we are facing an internal error please try again later ...",
+      });
+  }
+});
 
 router.put("/:id", async (req, res) => {
-    try{
-        const error = validateProblemItems(req.body);// author in body should be the same as current user.
-        if(error){
-            return res.status(400).send(error.details);
-        }
-        const problem = await updateProblem(req.params.id, req.body);
-        if(!problem){
-            return res.status(404).send({message : "The given Problem Id is invalid"});
-        }
-        return res.status(200).send(problem);
+  try {
+    const error = validateProblemItems(req.body); // author in body should be the same as current user.
+    if (error) {
+      return res.status(400).send(error.details);
     }
-    catch(err){
-        return res.status(400).send({message : "Bad request "});// will be updated to print detailed error message
+    const problem = await updateProblem(req.params.id, req.body);
+    if (!problem) {
+      return res
+        .status(404)
+        .send({ message: "The given Problem Id is invalid" });
     }
+    return res.status(200).send(problem);
+  } catch (err) {
+    return res.status(400).send({ message: "Bad request " }); // will be updated to print detailed error message
+  }
 });
 
 module.exports = router;

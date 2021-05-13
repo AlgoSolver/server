@@ -6,7 +6,7 @@ var mailgun = require("mailgun-js")({
 });
 
 module.exports = function (email, subject, body) {
-  console.log(email,subject,body)
+  console.log(email, subject, body);
   const data = {
     from: "algosolver@gmail.com",
     to: email,
