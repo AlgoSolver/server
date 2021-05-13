@@ -12,6 +12,7 @@ const checkAuth = require('./resources/_global-middlewares/check-auth')
 const userRoutes = require('./resources/user/user.routes');
 const codeRoutes = require('./resources/code/code.routes');
 const problems = require('./resources/problem/problem.routes');
+const trackRoutes = require('./resources/track/track.routes');
 const submissionsRouter = require("./resources/submission/submission.routes");
 
 // variables
@@ -53,6 +54,7 @@ app.use('/api/user',userRoutes);
 app.use('/api/code',codeRoutes);
 app.use("/api/problems", problems);
 app.use("/api/submissions", submissionsRouter);
+app.use("/api/track", trackRoutes);
 
 // handle Error
 // catch 404 and forward to error handler
