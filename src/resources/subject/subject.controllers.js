@@ -37,7 +37,7 @@ exports.subjects = async (req, res) => {
   let topic;
   try {
     topic = await Topic.findOne({
-      name: req.params.topic,
+      name: req.params.topic.toLowerCase(),
     })
       .select("subjects")
       .populate("subjects");

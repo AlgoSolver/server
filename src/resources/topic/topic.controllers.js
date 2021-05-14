@@ -36,7 +36,7 @@ exports.topics = async (req, res) => {
   let track;
   try {
     track = await Track.findOne({
-      name: req.params.track,
+      name: req.params.track.toLowerCase(),
     })
       .select("topics")
       .populate("topics");
