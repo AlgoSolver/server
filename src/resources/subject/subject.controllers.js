@@ -36,11 +36,9 @@ exports.createSubject = async (req, res) => {
 exports.subjects = async (req, res) => {
   let topic;
   try {
-    topic = await Topic.findOne({
+    topic = await Subject.findOne({
       name: req.params.topic.toLowerCase(),
-    })
-      .select("subjects")
-      .populate("subjects");
+    });
   } catch (err) {
     return res.status(500).send({
       message:
@@ -51,5 +49,23 @@ exports.subjects = async (req, res) => {
     return res.status(400).send({ message: "no topic with this id ..." });
   }
 
-  return res.status(200).json(topic.subjects);
+  return res.status(200).json(topic);
+  // let topic;
+  // try {
+  //   topic = await Topic.findOne({
+  //     name: req.params.topic.toLowerCase(),
+  //   })
+  //     .select("subjects")
+  //     .populate("subjects");
+  // } catch (err) {
+  //   return res.status(500).send({
+  //     message:
+  //       "Sorry we are facing an internal error please try again later ...",
+  //   });
+  // }
+  // if (!topic) {
+  //   return res.status(400).send({ message: "no topic with this id ..." });
+  // }
+  //
+  // return res.status(200).json(topic.subjects);
 };
