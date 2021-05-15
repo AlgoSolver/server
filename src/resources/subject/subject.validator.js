@@ -3,8 +3,8 @@ const Joi = require("joi");
 exports.createSubject = (req, res, next) => {
   const schema = Joi.object({
     name: Joi.string().required(),
-    description:Joi.string().required(),
-    topicName: Joi.string().required()
+    description: Joi.string().required(),
+    topicName: Joi.string().required(),
   });
 
   const { error, value } = schema.validate(req.body);

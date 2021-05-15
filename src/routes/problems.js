@@ -15,12 +15,10 @@ router.get("/", async (req, res) => {
     );
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   return res.json(problems);
 });
@@ -33,12 +31,10 @@ router.get("/:id", async (req, res) => {
     );
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   return res.json(problem);
 });

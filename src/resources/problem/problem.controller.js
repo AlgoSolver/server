@@ -21,12 +21,10 @@ exports.getProblems = async (req, res) => {
     return res.json(problems);
   } catch (err) {
     console.error(err);
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
 };
 
@@ -38,12 +36,10 @@ exports.getProblem = async (req, res) => {
     return res.json(problem);
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
 };
 
@@ -58,12 +54,10 @@ exports.createProblem = async (req, res) => {
     res.status(200).send(problem);
   } catch (err) {
     console.error(err);
-    res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
 };
 

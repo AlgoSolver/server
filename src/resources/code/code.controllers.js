@@ -16,12 +16,10 @@ exports.codes = async (req, res) => {
       }
     );
   } catch (err) {
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   return res.json(codes);
 };
@@ -31,12 +29,10 @@ exports.code = async (req, res) => {
   try {
     code = await Code.findById(id);
   } catch (err) {
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   if (!code) {
     return res.status(400).send({ message: "no playground with this id ..." });
@@ -52,12 +48,10 @@ exports.createCode = async (req, res) => {
   try {
     await code.save();
   } catch (err) {
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   return res.json(code);
 };
@@ -68,12 +62,10 @@ exports.updateCode = async (req, res) => {
   try {
     code = await Code.findById(id);
   } catch (err) {
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   if (!code) {
     return res.status(400).send({ message: "no playground with this id ..." });
@@ -86,12 +78,10 @@ exports.updateCode = async (req, res) => {
     if (data.code) code.code = data.code;
     await code.save();
   } catch (err) {
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   return res.status(201).json(code);
 };
@@ -101,12 +91,10 @@ exports.deleteCode = async (req, res) => {
   try {
     code = await Code.findById(id);
   } catch (err) {
-    return code
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return code.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   if (!code) {
     return res.status(400).send({ message: "no playground with this id ..." });
@@ -118,12 +106,10 @@ exports.deleteCode = async (req, res) => {
     await code.remove();
   } catch (err) {
     console.log(err);
-    return res
-      .status(500)
-      .send({
-        message:
-          "Sorry we are facing an internal error please try again later ...",
-      });
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
   }
   return res.json({ id });
 };

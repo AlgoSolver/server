@@ -38,14 +38,14 @@ exports.topics = async (req, res) => {
     track = await Track.findOne({
       name: req.params.track.toLowerCase(),
     })
-      .select('topics')
+      .select("topics")
       .populate({
-        path:"topics",
-        populate:{
-          path:"subjects",
-          model:"Subject",
-          select:"name"
-        }
+        path: "topics",
+        populate: {
+          path: "subjects",
+          model: "Subject",
+          select: "name",
+        },
       });
   } catch (err) {
     return res.status(500).send({

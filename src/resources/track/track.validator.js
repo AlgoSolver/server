@@ -16,15 +16,15 @@ exports.createTrack = (req, res, next) => {
 };
 
 exports.updateTrack = (req, res, next) => {
-    const schema = Joi.object({
-      name: Joi.string(),
-      description: Joi.string(),
-      img_url: Joi.string(),
-    });
-  
-    const { error, value } = schema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ message: error.message });
-    }
-    next();
-  };
+  const schema = Joi.object({
+    name: Joi.string(),
+    description: Joi.string(),
+    img_url: Joi.string(),
+  });
+
+  const { error, value } = schema.validate(req.body);
+  if (error) {
+    return res.status(400).json({ message: error.message });
+  }
+  next();
+};
