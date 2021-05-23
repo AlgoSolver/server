@@ -26,11 +26,11 @@ class SubmissionHandler extends EventEmitter {
     });
   }
 
-  async runTestCase(sourceCode, test) {
+  async runTestCase(sourceCode, test, timeLimit = 1) {
     try {
       const res = await axios.post(`${playgroundURL}${runCodePath}`, {
         lang: "C++",
-        timeLimit: 10,
+        timeLimit: timeLimit,
         sourceCode: sourceCode,
         input: test,
       });
