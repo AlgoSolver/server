@@ -51,3 +51,18 @@ exports.getUserSubmissions = async (req, res) => {
     return res.status(404).send({ message: "User not found" });
   }
 };
+
+exports.getUserSubmissionsProblem = async (req, res) => {
+  const { uid, pid } = req.params;
+  try {
+    const submissions = await Submission.find({
+      author: uid,
+      problem: pid,
+    }).populate("problem", "title");
+    return res.send(submissions);
+  } catch (err) {
+    return res
+      .status(500)
+      .send({ message: "Something went wrong, please try again later!" });
+  }
+};
