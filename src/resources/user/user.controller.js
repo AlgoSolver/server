@@ -39,11 +39,14 @@ exports.login = async (req, res, next) => {
       expiresIn: "365d",
     }
   );
-  res.cookie("algosolver_user_credential", token, {
-    httpOnly: true,
-    max: 1000 * 60 * 60 * 24 * 12, // 1 year
-  });
-  return res.status(200).json({ ...user._doc });
+
+  // cookies
+  // res.cookie("algosolver_user_credential", token, {
+  //   httpOnly: true,
+  //   max: 1000 * 60 * 60 * 24 * 12, // 1 year
+  // });
+
+  return res.status(200).json({ user: { ...user._doc }, token });
 };
 exports.logout = async (req, res) => {
   res.clearCookie("algosolver_user_credential");
@@ -105,14 +108,17 @@ exports.googleLogin = async (req, res) => {
       expiresIn: "365d",
     }
   );
-  res.cookie("algosolver_user_credential", token, {
-    httpOnly: true,
-    max: 1000 * 60 * 60 * 24 * 12, // 1 year
-  });
+  // res.cookie("algosolver_user_credential", token, {
+  //   httpOnly: true,
+  //   max: 1000 * 60 * 60 * 24 * 12, // 1 year
+  // });
   return res.status(200).json({
-    email,
-    _id: existingUser._id,
-    username: existingUser.username,
+    token,
+    user: {
+      email,
+      _id: existingUser._id,
+      username: existingUser.username,
+    },
   });
 };
 exports.signup = async (req, res, next) => {

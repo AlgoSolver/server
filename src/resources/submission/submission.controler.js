@@ -58,7 +58,11 @@ exports.getUserSubmissionsProblem = async (req, res) => {
     const submissions = await Submission.find({
       author: uid,
       problem: pid,
-    }).populate("problem", "title");
+    })
+      .sort({
+        createdAt: -1,
+      })
+      .populate("problem", "title");
     return res.send(submissions);
   } catch (err) {
     return res

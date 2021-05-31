@@ -3,7 +3,13 @@ const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res, next) => {
   req.auth = { notAuth: true };
-  const user = req?.cookies?.algosolver_user_credential || null;
+
+  //cookies
+  // const user = req?.cookies?.algosolver_user_credential || null;
+
+  // header
+  let user = req?.headers?.authentication?.split(" ")[1] || null;
+  console.log(user);
   if (!user) {
     return next();
   }
