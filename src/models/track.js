@@ -15,13 +15,10 @@ const trackSchema = new Schema(
       ref: 'User'
     },
     parentTrack: {
-<<<<<<< HEAD
       type:mongoose.ObjectId,
       ref:'Track'
-=======
       type: String,
       required: true
->>>>>>> 8dc87b2e99e44d3908d5be583b430266959bb0e2
     },
     prerequistes: {
       type: String
@@ -34,8 +31,6 @@ const trackSchema = new Schema(
   { timestamps: true }
 );
 
-<<<<<<< HEAD
-=======
 function validateTrack(track) {
   const schema = {
     title: Joi.string().min(10).max(50).required(),
@@ -45,8 +40,6 @@ function validateTrack(track) {
     parentTrack: Joi.string().required(),
     prerequistes: Joi.string().required()
   };
->>>>>>> 8dc87b2e99e44d3908d5be583b430266959bb0e2
-
   return Joi.validate(track, schema);
 }
  
