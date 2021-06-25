@@ -1,5 +1,5 @@
 # Back-End
-  [![CI Main](https://github.com/AlgoSolver/server/actions/workflows/node.js.yml/badge.svg)](https://github.com/AlgoSolver/server/actions/workflows/node.js.yml)    ![Heroku](https://img.shields.io/badge/CD-passing-success.svg?logo=heroku&colorA=79589f&logoColor=white)
+  [![CI](https://github.com/AlgoSolver/server/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/AlgoSolver/server/actions/workflows/node.js.yml)    ![Heroku](https://img.shields.io/badge/CD-passing-success.svg?logo=heroku&colorA=79589f&logoColor=white) [![Codeship Status for AlgoSolver/server](https://app.codeship.com/projects/ed12c5f8-c419-4e9f-971d-d4e6357a8b3f/status?branch=main)](https://app.codeship.com/projects/447859)
 <h2 align="center"> ERD </h2>
 
 <p align="center"> 
