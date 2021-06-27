@@ -27,9 +27,9 @@ exports.validateProblem = (problem) => {
       editorial: Joi.string(),
       testSets: Joi.array().items(joiTestSetSchema).min(1).required(),
       isPublished: Joi.boolean().required(),
-      modelAnswer: Joi.String().required(),
-      checker: Joi.String().required(),
-      validator: Joi.String().required(),
+      modelAnswer: Joi.string().required(),
+      checker: Joi.string().required(),
+      validator: Joi.string().required(),
     });
   } else {
     schema = Joi.object({
@@ -43,9 +43,9 @@ exports.validateProblem = (problem) => {
       editorial: Joi.string(),
       testSets: Joi.array().items(joiTestSetSchema).min(1),
       isPublished: Joi.boolean(),
-      modelAnswer: Joi.String(),
-      checker: Joi.String(),
-      validator: Joi.String(),
+      modelAnswer: Joi.string(),
+      checker: Joi.string(),
+      validator: Joi.string(),
     });
   }
   const { error } = schema.validate(problem);
@@ -65,9 +65,9 @@ exports.validateProblemItems = (problem) => {
     editorial: Joi.string(),
     testSets: Joi.array().items(joiTestSetSchema).min(1),
     isPublished: Joi.boolean(),
-    modelAnswer: Joi.String(),
-    checker: Joi.String(),
-    validator: Joi.String(),
+    modelAnswer: Joi.string(),
+    checker: Joi.string(),
+    validator: Joi.string(),
   });
   const { error } = schema.validate(problem);
   return error;
