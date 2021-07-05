@@ -6,21 +6,24 @@ const blogsPerPage = 5;
 
 const addBlog = async (req, res, next) => {
     const user = req.auth;
-    const {title, date, tags, body} = req.body;
-    const blog = new Blog({title, date, tags, body});
-    blog.user = user._id;
-    try{
-        await blog.save();
-    } catch(err) {
-        console.log(err);
-        return res
-        .status(500)
-        .json("some thing went wrong please try again later.");
-    }
-
+    const {content, tags, title} = req.body;
+    console.log( tags, title, user._id);
+    // const blog = new Blog({title, tags, body,user: user._id});
+    // try{
+    //     await blog.save();
+    // } catch(err) {
+    //     console.log(err);
+    //     return res
+    //     .status(500)
+    //     .json("some thing went wrong please try again later.");
+    // }
+    //
+    // return res
+    // .status(200)
+    //.json({Blog_id: blog._id});
     return res
     .status(200)
-    .json({Blog_id: blog._id});
+    .json({messgae: 'success'});
 };
 
 const modifiyBlog = async (req, res, next) => {
@@ -84,7 +87,7 @@ const deleteBlog = async (req, res, next) => {
                 .status(500)
                 .json("you are not allowed to delete this blog");
     }
-    
+
     for (i in blog.comments) {
        let result = await unAuthCommentDeletion(blog.comments[i]._id);
        if (result) {
@@ -114,17 +117,17 @@ const getBlogbyId = async (req, res, next) => {
     try {
         blog = await Blog.findById(blog_id)
                         .select("-upvoters -downvoters")
-                        .populate({ 
+                        .populate({
                             path: 'comments',
                             select: '-upvoters -downvoters -parentblog',
-                            populate: {        
+                            populate: {
                                 path: 'user',
                                 select: 'username role'
 
-                            },populate: {        
+                            },populate: {
                                 path: 'replys',
                                 select: '-upvoters -downvoters -parentcomment',
-                                populate: {        
+                                populate: {
                                     path: 'user',
                                     select: 'username role'
                                 }
@@ -152,7 +155,7 @@ const getBlogsbyPage = async (req, res, next) => {
     let NumberofPages = 0, NumberofDocuments = 0;
     let pagenumber = Number(req.query.page);
     console.log(pagenumber);
-    if(isNaN(pagenumber)) 
+    if(isNaN(pagenumber))
         pagenumber = 1;
 
     let blogs;
@@ -202,13 +205,13 @@ const getBlogsbyTags = async (req, res, next) => {
     let pagenumber = Number(req.query.page);
     if(isNaN(pagenumber) || pagenumber <= 0)
         pagenumber = 1;
-    
+
     const tags = req.query.tags.split(' ');
     console.log(tags);
     let blogs;
     try {
         blogs = await Blog.find({tags: {$in: tags}})
-                            .skip((pagenumber - 1) * blogsPerPage)  
+                            .skip((pagenumber - 1) * blogsPerPage)
                             .limit(blogsPerPage)
                             .select("-upvoters -downvoters -comments -body")
                             .populate('user', 'username role');
@@ -254,9 +257,9 @@ const upvoteBlog = async (req, res, next) => {
         return res
                 .status(500)
                 .json("there is no blog with this id");
-    
-    const isupovter = isvoter(blog.upvoters, user._id);     
-    const isdownvoter = isvoter(blog.downvoters, user._id);     
+
+    const isupovter = isvoter(blog.upvoters, user._id);
+    const isdownvoter = isvoter(blog.downvoters, user._id);
     if (isupovter){
         blog.upvoters.splice(isupovter - 1, 1);
         blog.upvoteCounter--;
@@ -302,8 +305,8 @@ const donwvoteBlog = async (req, res, next) => {
                 .status(500)
                 .json("there is no blog with this id");
 
-    const isupovter = isvoter(blog.upvoters, user._id);     
-    const isdownvoter = isvoter(blog.downvoters, user._id);     
+    const isupovter = isvoter(blog.upvoters, user._id);
+    const isdownvoter = isvoter(blog.downvoters, user._id);
     if (isupovter) {
         blog.upvoters.splice(isupovter - 1, 1);
         blog.downvoters.push(user._id);
@@ -318,7 +321,7 @@ const donwvoteBlog = async (req, res, next) => {
         blog.downvoters.push(user._id);
         blog.downvoteCounter++;
     }
-    
+
     try {
         await blog.save();
     } catch(err) {
@@ -337,7 +340,7 @@ const getBlogvotes = async (req, res, next) => {
 
     let blog;
     try {
-        blog = await Blog.findById(blog_id); 
+        blog = await Blog.findById(blog_id);
     } catch (err) {
         console.log(err);
         return res
@@ -358,7 +361,7 @@ const userStatus = async (req, res, next) => {
     const user = req.auth;
     if (!user)
         user._id = 0;
-    
+
     const blog_id = mongoose.Types.ObjectId(req.params.id);
     let blog;
     try {
@@ -375,12 +378,12 @@ const userStatus = async (req, res, next) => {
                 .json("there is no blog with this id");
 
     const isowner = String(user._id) == String(blog.user._id);
-    const isupovter = isvoter(blog.upvoters, user._id);     
+    const isupovter = isvoter(blog.upvoters, user._id);
     const isdownvoter = isvoter(blog.downvoters, user._id);
     let voterstatus = 0;
-    if (isupovter) 
+    if (isupovter)
         voterstatus = 1;
-    else if (isdownvoter) 
+    else if (isdownvoter)
         voterstatus = -1;
 
     return res

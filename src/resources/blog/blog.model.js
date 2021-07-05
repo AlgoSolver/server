@@ -13,10 +13,6 @@ const Blogschmea = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    date: {
-        type: Date,
-        required: true,
-    },
     tags: {
         type: [String],
         default: []
@@ -24,30 +20,12 @@ const Blogschmea = new mongoose.Schema({
     body: {
         type: String
     },
-    upvoteCounter: {
-        type: Number,
-        default: 0
-    },
-    upvoters: [{
-        type: objectId,
-        ref: 'User'
-    }],
-    downvoteCounter: {
-        type: Number,
-        default: 0
-    },
-    downvoters: [{
-        type: objectId,
-        ref: 'User'
-    }],
-    commentCounter: {
-        type: Number,
-        default: 0
-    },
     comments: [{
         type: objectId,
         ref: 'Comment'
     }]
+},{
+  timestamps:true
 });
 
 const Blog = mongoose.model('Blog', Blogschmea);
