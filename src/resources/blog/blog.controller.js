@@ -2,7 +2,7 @@ const {Blog} = require('./blog.model');
 const {unAuthCommentDeletion} = require('../comment/comment.controller');
 const mongoose = require("mongoose");
 
-const blogsPerPage = 5;
+const blogsPerPage = 20;
 
 const addBlog = async (req, res, next) => {
     const user = req.auth;
@@ -164,7 +164,7 @@ const getBlogsbyPage = async (req, res, next) => {
                     .find({})
                     .skip((pagenumber - 1) * blogsPerPage)
                     .limit(blogsPerPage)
-                    .select("-upvoters -downvoters -comments -body")
+                    .select("-title -comments -body")
                     .populate("user", "username role");
         NumberofDocuments = await Blog.find({}).count();
     } catch(err) {
