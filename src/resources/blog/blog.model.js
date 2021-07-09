@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const objectId = mongoose.Schema.Types.ObjectId;
 
 const Blogschmea = new mongoose.Schema({
-    title: {
+    header: {
         type: String,
         required: true,
         trim: true
     },
-    user: {
+    author: {
         type: objectId,
         ref: 'User',
         required: true
@@ -17,8 +17,9 @@ const Blogschmea = new mongoose.Schema({
         type: [String],
         default: []
     },
-    body: {
-        type: String
+    content: {
+        type: String,
+        required:true,
     },
     comments: [{
         type: objectId,
