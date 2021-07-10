@@ -3,51 +3,30 @@ const mongoose = require('mongoose');
 const objectId = mongoose.Schema.Types.ObjectId;
 
 const Blogschmea = new mongoose.Schema({
-    title: {
+    header: {
         type: String,
         required: true,
         trim: true
     },
-    user: {
+    author: {
         type: objectId,
         ref: 'User',
         required: true
-    },
-    date: {
-        type: Date,
-        required: true,
     },
     tags: {
         type: [String],
         default: []
     },
-    body: {
-        type: String
-    },
-    upvoteCounter: {
-        type: Number,
-        default: 0
-    },
-    upvoters: [{
-        type: objectId,
-        ref: 'User'
-    }],
-    downvoteCounter: {
-        type: Number,
-        default: 0
-    },
-    downvoters: [{
-        type: objectId,
-        ref: 'User'
-    }],
-    commentCounter: {
-        type: Number,
-        default: 0
+    content: {
+        type: String,
+        required:true,
     },
     comments: [{
         type: objectId,
         ref: 'Comment'
     }]
+},{
+  timestamps:true
 });
 
 const Blog = mongoose.model('Blog', Blogschmea);

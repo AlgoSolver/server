@@ -22,8 +22,8 @@ const User = mongoose.model(
       },
       role: {
         type: String,
-        status: ["admin", "student", "content_creator"],
-        default: "student",
+        status: ["ADMIN", "STUDENT", "CONTENT_CREATOR"],
+        default: "STUDENT",
       },
       resetPasswordLink: {
         type: String,

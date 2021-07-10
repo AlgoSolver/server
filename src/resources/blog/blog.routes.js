@@ -7,8 +7,8 @@ const auth_guard = require("../_global-middlewares/auth-guard");
 router
     .route("")
     .get(blogController.getBlogsbyPage)//get blogs first page
-    .post(auth_guard, blogController.addBlog);// add blog
-    
+    .post(auth_guard , blogController.addBlog);// add blog
+
 router.get("/numberofpages",blogController.getNumberofBlogpages);// get # of pages
 router.get("/taged", blogValidator.validateblogtags, blogController.getBlogsbyTags);//get blogs by tags
 

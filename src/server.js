@@ -15,6 +15,7 @@ const trackRoutes = require("./resources/track/track.routes");
 const topicRoutes = require("./resources/topic/topic.routes");
 const submissionsRouter = require("./resources/submission/submission.routes");
 const subjectRoutes = require("./resources/subject/subject.routes");
+const blog = require("./resources/blog/blog.routes");
 
 // variables
 const app = express();
@@ -61,6 +62,7 @@ app.use("/api/submissions", submissionsRouter);
 app.use("/api/track", trackRoutes);
 app.use("/api/topic", topicRoutes);
 app.use("/api/subject", subjectRoutes);
+app.use("/api/blog", blog);
 
 // handle Error
 // catch 404 and forward to error handler

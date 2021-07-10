@@ -2,7 +2,13 @@ const User = require("../user/user.model");
 const jwt = require("jsonwebtoken");
 
 module.exports = async (req, res, next) => {
-  req.auth = { notAuth: true };
+  req.auth = { 
+    notAuth: true,
+    _id:null,
+    username:null,
+    email:null,
+    role:"SIGNEDOUT" 
+  };
 
   //cookies
   // const user = req?.cookies?.algosolver_user_credential || null;
@@ -23,7 +29,7 @@ module.exports = async (req, res, next) => {
   let userExist;
   try {
     userExist = await User.findById(decodedToken.userId).select(
-      "username email _id"
+      "username email _id role"
     );
   } catch (err) {}
   if (userExist) req.auth = userExist;

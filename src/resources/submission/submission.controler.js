@@ -30,7 +30,7 @@ exports.getSubmission = async (req, res) => {
     const submission = await Submission.findById(req.params.id).populate(
       "problem",
       "title"
-    );
+    ).populate("author","username");
     if (!submission)
       return res.status(404).send({ message: "Submission not found" });
     return res.send(submission);
