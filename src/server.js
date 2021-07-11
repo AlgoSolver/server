@@ -40,12 +40,15 @@ if (process.env.NODE_ENV === "production") {
   // debugging tool in the console : showing the requests
   app.use(morgan());
 }
+
+app.use( express.json({limit: 1 << 30}));// set limit of request to 1GB 
+
 app.use(cookieParser());
 app.use(
   cors({
     origin,
     credentials: true,
-    exposedHeaders: ["Set-Cookie", "Date", "ETag"],
+    exposedHeaders: ["Set-Cookie", "Date", "ETag"]
   })
 );
 app.use(express.json());

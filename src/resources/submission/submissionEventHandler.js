@@ -4,8 +4,10 @@ const axios = require("axios");
 const EventEmitter = require("events");
 const { exit } = require("process");
 
-//const playgroundURL = "http://localhost:3000/";
-const playgroundURL = "https://algosolver-playground.herokuapp.com/";
+// set up playground as env variable if not set use the online one.
+
+const playgroundURL = process.env.PLAYGROUNDURL || "https://algosolver-playground.herokuapp.com/";
+
 const runCodePath = "api/runCode",
   runCheckerPath = "api/runChecker";
 
