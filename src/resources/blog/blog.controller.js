@@ -7,15 +7,29 @@ const blogsPerPage = 20;
 const addBlog = async (req, res, next) => {
     const user = req.auth;
     const { content, tags, header } = req.body;
+    header = header.toLowerCase();
+    let blogHeaderExist;
+    try{
+        blogHeaderExist = await Blog.findOne({header});
+    }catch(err){
+        return res
+            .status(500)
+            .json("some thing went wrong please try again later.");
+    }
+    if(blogHeaderExist){
+        return res
+            .status(400)
+            .json("This Header is Already Taken, place provide another header");
+    }
     //console.log( tags, header, user._id);
     const blog = new Blog({ header, tags, content, author: user._id });
+
     const createdTags = tags.map( async (tag)=>{
         let tagExist;
         try{
             tagExist = await Tag.findOne({name:tag});
         }catch(err){}
         if(tagExist) {
-            console.log('tag is exits')
             tagExist.articles.push(blog._id);
             return tagExist;
         }
@@ -27,7 +41,6 @@ const addBlog = async (req, res, next) => {
         session.startTransaction();
         let x = await Promise.all(createdTags)
         for(let t of x){
-            console.log("ss", t);
             await t.save(session)
         }
         await blog.save(session)
@@ -47,12 +60,12 @@ const getBlogsbyPage = async (req, res, next) => {
     let NumberofPages = 0,
         NumberofDocuments = 0;
     let pagenumber = Number(req.query.page);
-    console.log(pagenumber);
+    let keyword = req.query.keyword;
     if (isNaN(pagenumber)) pagenumber = 1;
 
     let blogs;
     try {
-        blogs = await Blog.find({})
+        blogs = await Blog.find(keyword ? {header:{$regex:keyword.toLowerCase()}} : {})
             .skip((pagenumber - 1) * blogsPerPage)
             .limit(blogsPerPage)
             .select("-title -comments -body")

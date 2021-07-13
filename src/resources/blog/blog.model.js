@@ -5,6 +5,7 @@ const objectId = mongoose.Schema.Types.ObjectId;
 const Blogschmea = new mongoose.Schema({
     header: {
         type: String,
+        unique:true,
         required: true,
         trim: true
     },

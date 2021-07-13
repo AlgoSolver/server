@@ -14,7 +14,7 @@ exports.getProblems = async (req, res) => {
         isPublished: true,
       },
       {
-        ...getPagination(parseInt(req.query.page) - 1, 2),
+        ...getPagination(parseInt(req.query.page) - 1, 20),
         select: selectedFields,
       }
     );
