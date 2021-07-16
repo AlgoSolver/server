@@ -1,18 +1,19 @@
 const Code = require("./code.model");
 const getPagination = require("../../utils/getPagination");
 exports.codes = async (req, res) => {
-  console.log(req.query);
+  const {username} = req.params.username;
+  const limit = +(req.query.limit) || 10 ;
   let codes;
   try {
     codes = await Code.paginate(
       {
-        author: req.auth._id,
+        username,
       },
       {
         sort: {
           updatedAt: -1,
         },
-        ...getPagination(parseInt(req.query.page) - 1, 10),
+        ...getPagination(parseInt(req.query.page) - 1, limit),
       }
     );
   } catch (err) {

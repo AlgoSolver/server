@@ -1,6 +1,8 @@
 const Submission = require("./submission.model");
 const validate = require("./submission.validator");
 const SubmissionHandler = require("./submissionEventHandler");
+const getPagination = require("../../utils/getPagination");
+
 const submissionHandler = new SubmissionHandler();
 
 exports.createSubmission = async (req, res) => {
@@ -8,6 +10,7 @@ exports.createSubmission = async (req, res) => {
     //return res.status(401).json({message: "Not Authorized!"});
     req.auth._id = req.body.author; // just for debugging
   }
+
   try {
     req.body.author = String(req.auth._id);
     req.body.status = "Pending"; // will raise an event after inserting to database any pending
@@ -27,10 +30,13 @@ exports.createSubmission = async (req, res) => {
 
 exports.getSubmission = async (req, res) => {
   try {
-    const submission = await Submission.findById(req.params.id).populate(
-      "problem",
-      "title"
-    ).populate("author","username");
+    const submission = await Submission.findById(req.params.id)
+      .sort({
+        createdAt: -1,
+      })
+      .populate("problem", "title")
+      .populate("author", "username");
+
     if (!submission)
       return res.status(404).send({ message: "Submission not found" });
     return res.send(submission);
@@ -40,18 +46,23 @@ exports.getSubmission = async (req, res) => {
 };
 
 exports.getUserSubmissions = async (req, res) => {
+  const limit = +req.query?.limit || 100;
+  const page = +req.query?.page || 0;
+  let submissions;
   try {
-    const submissions = await Submission.find({ author: req.params.uid })
+   submissions = await Submission.find({ author: req.params.uid })
       .sort({
         createdAt: -1,
       })
+      .skip(page * limit)
+      .limit(limit)
       .populate("problem", "title");
-    res.send(submissions);
   } catch (err) {
+    console.log(err)
     return res.status(404).send({ message: "User not found" });
   }
+  return res.send(submissions || []);
 };
-
 exports.getUserSubmissionsProblem = async (req, res) => {
   const { uid, pid } = req.params;
   try {

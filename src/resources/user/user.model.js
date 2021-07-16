@@ -20,7 +20,10 @@ const User = mongoose.model(
         trim: true,
         unique: true,
       },
-      role: {
+      imgURL:{
+        type:String,
+      },
+        role: {
         type: String,
         status: ["ADMIN", "STUDENT", "CONTENT_CREATOR"],
         default: "STUDENT",

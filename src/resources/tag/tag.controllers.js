@@ -18,7 +18,7 @@ exports.articles = async (req,res)=>{
 			},
 			populate:{
 				path:'author',
-				select:"username role",
+				select:"username role imgURL",
 				model:"User",
 			}
 		})
@@ -46,7 +46,7 @@ exports.problems = async ({req,res})=>{
 			},
 			populate:{
 				path:'author',
-				select:"username role",
+				select:"username role imgURL",
 				model:"User",
 			}
 		})

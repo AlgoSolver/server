@@ -4,6 +4,7 @@ const router = require("express").Router();
 
 router.get("/auth", userController.getCurrent);
 router.post("/login", userValidator.login, userController.login);
+router.get('/profile/:username', userController.getProfile)
 
 router.post("/logout", userController.logout);
 router.post("/google-login", userController.googleLogin);
