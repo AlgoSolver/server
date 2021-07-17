@@ -1,15 +1,28 @@
 const Code = require("./code.model");
+const User = require("../user/user.model")
 const getPagination = require("../../utils/getPagination");
 exports.codes = async (req, res) => {
-  const {username} = req.params.username;
+  const {username} = req.params;
   const limit = +(req.query.limit) || 10 ;
   let codes;
+  let user;
+  try{
+    user = await User.findOne({username});
+  }catch(err){
+    return res.status(500).send({
+      message:
+        "Sorry we are facing an internal error please try again later ...",
+    });
+  }
+  if(!user){
+     return res.status(400).send({ message: "no user found for this username ..." });
+  }
   try {
     codes = await Code.paginate(
       {
-        username,
+        author:user._id,
       },
-      {
+      { 
         sort: {
           updatedAt: -1,
         },
