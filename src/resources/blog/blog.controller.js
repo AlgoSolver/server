@@ -6,7 +6,7 @@ const blogsPerPage = 20;
 
 const addBlog = async (req, res, next) => {
     const user = req.auth;
-    const { content, tags, header } = req.body;
+    let { content, tags, header } = req.body;
     header = header.toLowerCase();
     let blogHeaderExist;
     try{
