@@ -7,7 +7,8 @@ module.exports = async (req, res, next) => {
     _id:null,
     username:null,
     email:null,
-    role:"SIGNEDOUT" 
+    role:"SIGNEDOUT" ,
+    imgURL:null
   };
 
   //cookies
@@ -29,7 +30,7 @@ module.exports = async (req, res, next) => {
   let userExist;
   try {
     userExist = await User.findById(decodedToken.userId).select(
-      "username email _id role"
+      "username email _id role imgURL"
     );
   } catch (err) {}
   if (userExist) req.auth = userExist;
