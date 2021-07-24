@@ -15,7 +15,6 @@ const validateCommentId = (req, res, next) => {
 
 const validateComment = (req, res, next) => {
     const schema = Joi.object({
-        date: Joi.date().required(),
         body: Joi.string().required()
     });
     

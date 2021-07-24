@@ -3,9 +3,10 @@ const {Comment} = require('./comment.model');
 const mongoose = require("mongoose");
 const {unAuthReplyDeletion} = require("../reply/reply.controller");
 
+
 const addComment = async (req, res, next) => {
     const user = req.auth;
-    const blog_id = mongoose.Types.ObjectId(req.body.blog_id);
+    const blog_id= req.body.blog_id;
     let blog;
     try {
         blog = await Blog.findById(blog_id);
@@ -20,10 +21,8 @@ const addComment = async (req, res, next) => {
                 .status(500)
                 .json("there is no blog with this id.");
     
-    const {date, body} = req.body;
-    const comment = new Comment({date, body});
-    comment.user = user._id;
-    comment.parentblog = blog_id;
+    const {body} = req.body;
+    const comment = new Comment({body,author:user._id, article:blog_id});
     blog.comments.push(comment._id);
     blog.commentCounter++;
     try{
@@ -38,7 +37,7 @@ const addComment = async (req, res, next) => {
 
     return res
             .status(200)
-            .json({comment_id: comment._id});
+            .json({comment});
 };
 
 const modifiyComment = async (req, res, next) => {
@@ -82,7 +81,7 @@ const modifiyComment = async (req, res, next) => {
 
 const deleteComment = async (req, res, next) => {
     const user = req.auth;
-    const comment_id = mongoose.Types.ObjectId(req.params.id);
+    const comment_id = req.params.id;
     let comment;
     try {
         comment = await Comment.findById(comment_id);
@@ -102,18 +101,6 @@ const deleteComment = async (req, res, next) => {
                 .status(500)
                 .json("you are not allowed to delete this comment");
     }
-
-    let rlength = comment.replys.length;
-    for (i = rlength - 1; i >= 0; i--) {
-        let result = await unAuthReplyDeletion(comment.replys[i]._id);
-        if (result) {
-            console.log(result.error);
-            return res
-                    .status(500)
-                    .json(result.message);
-        }
-    }
-
     let blog;
     try {
         blog = await Blog.findById(comment.parentblog._id);
