@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const Tag = require('../tag/tag.model');
 const blogsPerPage = 20;
 
+
 const addBlog = async (req, res, next) => {
     const user = req.auth;
     let { content, tags, header } = req.body;
@@ -55,7 +56,28 @@ const addBlog = async (req, res, next) => {
 
     return res.status(200).json({ id:blog._id });
 };
-
+const getBlogComments = async (req, res) => {
+    const {id} = req.params;
+    let blog;
+    try{
+        blog = await Blog.findById(id).populate({
+            path:"comments",
+            model:"Comment",
+            select:"author body createdAt",
+			populate:{
+				path:'author',
+				select:"username role imgURL",
+				model:"User",
+			}
+        });
+    }catch(err){
+        console.log(err);
+        return res
+        .status(500)
+        .json("there is no records for this article.");
+    }
+    res.json(blog?.comments || []);
+}
 const getBlogsbyPage = async (req, res, next) => {
     let NumberofPages = 0,
         NumberofDocuments = 0;
@@ -66,6 +88,9 @@ const getBlogsbyPage = async (req, res, next) => {
     let blogs;
     try {
         blogs = await Blog.find(keyword ? {header:{$regex:keyword.toLowerCase()}} : {})
+            .sort({
+                createdAt:-1
+            })
             .skip((pagenumber - 1) * blogsPerPage)
             .limit(blogsPerPage)
             .select("-title -comments -body")
@@ -356,5 +381,6 @@ module.exports = {
     donwvoteBlog,
     getBlogvotes,
     userStatus,
+    getBlogComments
 };
 // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlzbGFtZ2hhbnkzQGdtYWlsLmNvbSIsInVzZXJJZCI6IjYwMTE0YWY1NjllNDg0M2QzNGY5ZDcwOCIsInVzZXJuYW1lIjoiaXNsYW1naGFueSIsImlhdCI6MTYxOTM3Mjg4NiwiZXhwIjoxNjUwOTA4ODg2fQ.ICxqQKtGl1W4o7SAzs0OB8zb_D4JjcT8i5xJ6ndU2NQ
