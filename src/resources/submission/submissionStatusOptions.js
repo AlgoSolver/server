@@ -5,4 +5,5 @@ module.exports = [
   "Time Limit Exceeded",
   "Memory Limit Exceeded",
   "Compilation Error",
+  "Run Time Error"
 ];
