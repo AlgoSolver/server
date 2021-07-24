@@ -17,6 +17,7 @@ const submissionsRouter = require("./resources/submission/submission.routes");
 const subjectRoutes = require("./resources/subject/subject.routes");
 const blogRoutes = require("./resources/blog/blog.routes");
 const tagRoutes = require("./resources/tag/tag.routes");
+const commentRoutes = require("./resources/comment/comment.routes");
 
 // variables
 const app = express();
@@ -65,6 +66,7 @@ app.use("/api/topic", topicRoutes);
 app.use("/api/subject", subjectRoutes);
 app.use("/api/blog", blogRoutes);
 app.use("/api/tag", tagRoutes);
+app.use("/api/comments", commentRoutes);
 
 // handle Error
 // catch 404 and forward to error handler

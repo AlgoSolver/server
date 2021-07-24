@@ -9,6 +9,7 @@ router
     .get(blogController.getBlogsbyPage)//get blogs first page
     .post(auth_guard , blogController.addBlog);// add blog
 
+router.get('/comments/:id', blogController.getBlogComments);
 router.get("/numberofpages",blogController.getNumberofBlogpages);// get # of pages
 router.get("/taged", blogValidator.validateblogtags, blogController.getBlogsbyTags);//get blogs by tags
 

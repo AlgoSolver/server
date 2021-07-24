@@ -6,7 +6,7 @@ const {unAuthReplyDeletion} = require("../reply/reply.controller");
 
 const addComment = async (req, res, next) => {
     const user = req.auth;
-    const blog_id= req.body.blog_id;
+    const blog_id= req.body.id;
     let blog;
     try {
         blog = await Blog.findById(blog_id);
