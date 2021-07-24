@@ -2,7 +2,7 @@ require("dotenv").config({ path: ".env" });
 
 var mailgun = require("mailgun-js")({
   apiKey: `${process.env.MG_API_KEY}`,
-  domain: `sandbox2e29a5ff43a94f11a1547d2427ad4689.mailgun.org`,
+  domain: `algosolver.tech`,
 });
 
 module.exports = function (email, subject, body) {

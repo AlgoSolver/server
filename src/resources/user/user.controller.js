@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 const User = require("./user.model");
 const bcrypt = require("bcryptjs");
 const send = require("../../services/send-mail");
+const generateImgURL = require("../../utils/generateImgURL");
+
 const { OAuth2Client } = require("google-auth-library");
 const activateAccountTemp = require("./users.emails");
 exports.login = async (req, res, next) => {
@@ -55,6 +57,23 @@ exports.logout = async (req, res) => {
 exports.getCurrent = async (req, res) => {
   return res.status(200).json(req.auth);
 };
+exports.getProfile = async (req,res)=>{
+  const {username} = req.params;
+  let user; 
+  try{
+    user = await User.findOne({username}).select("username email imgURL");
+  }catch(err){
+    return res
+      .status(500)
+      .json({ message: "Something went wrong. Try later." });
+  }
+  if(!user){
+    return res
+      .status(401)
+      .json({ message: "This username does't exist" });
+  };
+  return res.json(user);
+}
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 exports.googleLogin = async (req, res) => {
   const { idToken } = req.body;
@@ -202,7 +221,7 @@ exports.activateAccount = async (req, res, next) => {
       .status(500)
       .json({ message: "Something went wrong. Try later." });
   }
-  let newUser = new User({ username, email, password: incryptedPassword });
+  let newUser = new User({ username, email, password: incryptedPassword,imgURL:generateImgURL() });
   try {
     await newUser.save();
   } catch (err) {

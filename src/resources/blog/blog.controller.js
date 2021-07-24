@@ -1,16 +1,51 @@
 const { Blog } = require("./blog.model");
 const { unAuthCommentDeletion } = require("../comment/comment.controller");
 const mongoose = require("mongoose");
-
+const Tag = require('../tag/tag.model');
 const blogsPerPage = 20;
 
 const addBlog = async (req, res, next) => {
     const user = req.auth;
-    const { content, tags, header } = req.body;
+    let { content, tags, header } = req.body;
+    header = header.toLowerCase();
+    let blogHeaderExist;
+    try{
+        blogHeaderExist = await Blog.findOne({header});
+    }catch(err){
+        return res
+            .status(500)
+            .json("some thing went wrong please try again later.");
+    }
+    if(blogHeaderExist){
+        return res
+            .status(400)
+            .json("This Header is Already Taken, place provide another header");
+    }
     //console.log( tags, header, user._id);
     const blog = new Blog({ header, tags, content, author: user._id });
+
+    const createdTags = tags.map( async (tag)=>{
+        let tagExist;
+        try{
+            tagExist = await Tag.findOne({name:tag});
+        }catch(err){}
+        if(tagExist) {
+            tagExist.articles.push(blog._id);
+            return tagExist;
+        }
+         return new Tag({name:tag,articles:[blog._id]});
+    });
+    const session = await mongoose.startSession();
+
     try {
-        await blog.save();
+        session.startTransaction();
+        let x = await Promise.all(createdTags)
+        for(let t of x){
+            await t.save(session)
+        }
+        await blog.save(session)
+        await session.commitTransaction();
+        session.endSession();
     } catch (err) {
         console.log(err);
         return res
@@ -18,19 +53,19 @@ const addBlog = async (req, res, next) => {
             .json("some thing went wrong please try again later.");
     }
 
-    return res.status(200).json({ id: blog._id });
+    return res.status(200).json({ id:blog._id });
 };
 
 const getBlogsbyPage = async (req, res, next) => {
     let NumberofPages = 0,
         NumberofDocuments = 0;
     let pagenumber = Number(req.query.page);
-    console.log(pagenumber);
+    let keyword = req.query.keyword;
     if (isNaN(pagenumber)) pagenumber = 1;
 
     let blogs;
     try {
-        blogs = await Blog.find({})
+        blogs = await Blog.find(keyword ? {header:{$regex:keyword.toLowerCase()}} : {})
             .skip((pagenumber - 1) * blogsPerPage)
             .limit(blogsPerPage)
             .select("-title -comments -body")

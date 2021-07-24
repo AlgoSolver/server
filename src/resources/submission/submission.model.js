@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const submissionStatusOptions = require("./submissionStatusOptions");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const submissionSchema = new mongoose.Schema(
   {
@@ -48,6 +49,6 @@ const submissionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Submission = mongoose.model("Submission", submissionSchema);
+submissionSchema.plugin(mongoosePaginate);
 
-module.exports = Submission;
+module.exports = mongoose.model("Submission", submissionSchema);
