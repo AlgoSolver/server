@@ -37,7 +37,7 @@ exports.subjects = async (req, res) => {
   let topic;
   try {
     topic = await Subject.findOne({
-      name: req.params.topic.toLowerCase(),
+      name: req.params.topic,
     });
   } catch (err) {
     return res.status(500).send({
