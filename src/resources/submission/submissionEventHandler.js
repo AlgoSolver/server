@@ -70,8 +70,7 @@ class SubmissionHandler extends EventEmitter {
   async testOneSubmission(submissionId) {
     console.log("Called here for testing ...\n");
     const submission = await Submission.findById(submissionId);
-
-    if (submission.status != "Pending") {
+    if (!submission || submission.status != "Pending") {// if removed from database ignore it
       // done with handling it
       return;
     }
@@ -146,3 +145,4 @@ class SubmissionHandler extends EventEmitter {
 }
 
 module.exports = SubmissionHandler;
+

@@ -5,6 +5,14 @@ const getPagination = require("../../utils/getPagination");
 
 const submissionHandler = new SubmissionHandler();
 
+async function init(){
+  const pendingProblems = await Submission.find({status: "Pending"}).select("_id");
+  for(pendingProblem of pendingProblems){
+    submissionHandler.emit("submit", pendingProblem._id);
+  }
+}
+init();// call it
+
 exports.createSubmission = async (req, res) => {
   if (!req.auth._id) {
     //return res.status(401).json({message: "Not Authorized!"});
