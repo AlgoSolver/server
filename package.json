@@ -27,7 +27,7 @@
     "express": "^4.17.1",
     "express-rate-limit": "^5.2.3",
     "express-validator": "^6.9.2",
-    "google-auth-library": "^6.1.6",
+    "google-auth-library": "^9.0.0",
     "http-errors": "^1.8.0",
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
